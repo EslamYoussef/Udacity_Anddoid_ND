@@ -30,3 +30,17 @@ proguard/
 
 # Android Studio captures folder
 captures/
+/Projects/MovieApp/*.gitignore
+/Projects/MovieApp/.idea/*.xml
+/Projects/MovieApp/.idea/copyright/*.xml
+/Projects/MovieApp/app/*.gitignore
+/Projects/MovieApp/app/*.gradle
+/Projects/MovieApp/app/*.pro
+/Projects/MovieApp/app/src/androidTest/java/com/udacity/eslam/movieapp/*.java
+/Projects/MovieApp/app/src/test/java/com/udacity/eslam/movieapp/*.java
+/Projects/MovieApp/*.gradle
+/Projects/MovieApp/*.properties
+/Projects/MovieApp/gradle/wrapper/*.jar
+/Projects/MovieApp/gradle/wrapper/*.properties
+/Projects/MovieApp/*
+/Projects/MovieApp/*.bat
