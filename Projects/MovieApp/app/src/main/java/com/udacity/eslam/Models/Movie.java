@@ -22,7 +22,7 @@ public class Movie {
     private String mReleaseDate;
     private Double mVoteAverage;
     private Double mVotCount;
-    private Double mRuntime;
+
 
     public String getTitle() {
         return mTitle;
@@ -81,13 +81,6 @@ public class Movie {
         this.mVotCount = votCount;
     }
 
-    public Double getRuntime() {
-        return mRuntime;
-    }
-
-    public void setRuntime(Double runtime) {
-        this.mRuntime = runtime;
-    }
 
     public String getReleaseDate() {
         return mReleaseDate;
@@ -105,7 +98,6 @@ public class Movie {
         movie.setPosterPath(jMovie.getString(Values.KEY_POSTER_PATH));
         movie.setReleaseDate(jMovie.getString(Values.KEY_RELEASE_DATE));
         movie.setPopularity(jMovie.getDouble(Values.KEY_POPULARITY));
-        movie.setRuntime(jMovie.getDouble(Values.KEY_RUNTIME));
         movie.setVotCount(jMovie.getDouble(Values.KEY_VOTE_COUNT));
         movie.setVoteAverage(jMovie.getDouble(Values.KEY_VOTE_AVERAGE));
 

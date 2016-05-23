@@ -5,11 +5,12 @@ import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
+import com.udacity.eslam.BuildConfig;
 import com.udacity.eslam.Models.Movie;
 import com.udacity.eslam.Utility.URLs;
 import com.udacity.eslam.Utility.Utilties;
 import com.udacity.eslam.Utility.Values;
-import com.udacity.eslam.movieapp.BuildConfig;
+
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,11 +42,6 @@ public class MovieTaskLoader extends AsyncTaskLoader<ArrayList<Movie>> {
         mContext = context;
     }
 
-    public MovieTaskLoader(Context context, String url) {
-        super(context);
-        mContext = context;
-        mURL = url;
-    }
 
     @Override
     public ArrayList<Movie> loadInBackground() {
@@ -57,6 +53,7 @@ public class MovieTaskLoader extends AsyncTaskLoader<ArrayList<Movie>> {
                     .build();
         } else {
             builtUri = Uri.parse(URLs.MOST_POPULAR_MOVIES_URL).buildUpon()
+
                     .appendQueryParameter(Values.KEY_API_KEY, BuildConfig.api_key)
                     .build();
         }
