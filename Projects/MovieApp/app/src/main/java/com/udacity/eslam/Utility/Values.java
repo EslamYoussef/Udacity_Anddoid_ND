@@ -17,9 +17,10 @@ public class Values {
     public static String KEY_RUNTIME = "runtime";
     public static String KEY_VOTE_AVERAGE = "vote_average";
     public static String KEY_VOTE_COUNT = "vote_count";
+    public static String KEY_RESULTS = "results";
     public static String KEY_API_KEY = "api_key";
     public static String KEY_SORT_MODE = "sort-mode";
     public static String KEY_MODE_MOST_POPULAR = "most_popular";
     public static String KEY_MODE_TOP_RATED = "top_rated";
-    public static String KEY_PREF_FILE= "prefs";
+    public static String KEY_PREF_FILE = "prefs";
 }

@@ -112,15 +112,10 @@ public class Movie {
         return movie;
     }
 
-    public static ArrayList<Movie> getMoviesListFromJSONArray(JSONArray jMoviesList) {
+    public static ArrayList<Movie> getMoviesListFromJSONArray(JSONArray jMoviesList) throws JSONException {
         ArrayList<Movie> moviesList = new ArrayList<>();
-        for (int i = 0; i < jMoviesList.length(); i++) {
-            try {
-                moviesList.add(getMovieFromJSONObject(jMoviesList.getJSONObject(i)));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
+        for (int i = 0; i < jMoviesList.length(); i++)
+            moviesList.add(getMovieFromJSONObject(jMoviesList.getJSONObject(i)));
         return moviesList;
     }
 

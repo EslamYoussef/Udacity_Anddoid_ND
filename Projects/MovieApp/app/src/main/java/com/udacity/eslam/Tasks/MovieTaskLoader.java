@@ -2,10 +2,28 @@ package com.udacity.eslam.Tasks;
 
 import android.content.AsyncTaskLoader;
 import android.content.Context;
+import android.net.Uri;
+import android.util.Log;
 
 import com.udacity.eslam.Models.Movie;
+import com.udacity.eslam.Utility.URLs;
+import com.udacity.eslam.Utility.Utilties;
+import com.udacity.eslam.Utility.Values;
+import com.udacity.eslam.movieapp.BuildConfig;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.jar.JarException;
 
 /**
  * Created by Eslam on 5/22/2016.
@@ -15,6 +33,8 @@ public class MovieTaskLoader extends AsyncTaskLoader<ArrayList<Movie>> {
     private ArrayList<Movie> mMoviesList;
     private String mURL;
     private Context mContext;
+    String mMode;
+    static String LOG_TAG = "MOVIE_TASK_LOADER";
 
     public MovieTaskLoader(Context context) {
         super(context);
@@ -29,6 +49,82 @@ public class MovieTaskLoader extends AsyncTaskLoader<ArrayList<Movie>> {
 
     @Override
     public ArrayList<Movie> loadInBackground() {
+        mMode = Utilties.getUserMovieSortPreference(mContext);
+        Uri builtUri = null;
+        if (mMode.equalsIgnoreCase(Values.KEY_MODE_MOST_POPULAR)) {
+            builtUri = Uri.parse(URLs.MOST_POPULAR_MOVIES_URL).buildUpon()
+                    .appendQueryParameter(Values.KEY_API_KEY, BuildConfig.api_key)
+                    .build();
+        } else {
+            builtUri = Uri.parse(URLs.MOST_POPULAR_MOVIES_URL).buildUpon()
+                    .appendQueryParameter(Values.KEY_API_KEY, BuildConfig.api_key)
+                    .build();
+        }
+
+
+        URL url = null;
+        // These two need to be declared outside the try/catch
+        // so that they can be closed in the finally block.
+        HttpURLConnection urlConnection = null;
+        BufferedReader reader = null;
+
+        try {
+            url = new URL(builtUri.toString());
+            // Create the request to OpenWeatherMap, and open the connection
+            urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setRequestMethod("GET");
+            urlConnection.connect();
+
+            // Read the input stream into a String
+            InputStream inputStream = urlConnection.getInputStream();
+            StringBuffer buffer = new StringBuffer();
+            if (inputStream == null) {
+                // Nothing to do.
+                return null;
+            }
+            reader = new BufferedReader(new InputStreamReader(inputStream));
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
+                // But it does make debugging a *lot* easier if you print out the completed
+                // buffer for debugging.
+                buffer.append(line + "\n");
+            }
+
+            if (buffer.length() == 0) {
+                // Stream was empty.  No point in parsing.
+                return null;
+            }
+            //Extracting Movies JSON Array from the response
+            JSONArray jMoviesArr = new JSONObject(buffer.toString()).getJSONArray(Values.KEY_RESULTS);
+            //Parse the JSON Movies
+            mMoviesList = Movie.getMoviesListFromJSONArray(jMoviesArr);
+            return mMoviesList;
+        } catch (IOException e)
+
+        {
+            Log.e(LOG_TAG, "Error ", e);
+            // If the code didn't successfully get the weather data, there's no point in attempting
+            // to parse it.
+        } catch (JSONException e) {
+            Log.e(LOG_TAG, e.getMessage(), e);
+            e.printStackTrace();
+        } finally
+
+        {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (final IOException e) {
+                    Log.e(LOG_TAG, "Error closing stream", e);
+                }
+            }
+        }
+
 
         return null;
     }
