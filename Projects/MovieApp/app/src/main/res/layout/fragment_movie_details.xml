@@ -1,0 +1,62 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.udacity.eslam.Views.MovieDetailsFragment">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/movie_backdrop_height">
+
+        <ImageView
+            android:id="@+id/ivMovieBackDrop"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/movie_backdrop_height"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/loading" />
+
+        <TextView
+            android:id="@+id/tvDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:background="@color/colorPrimary"
+
+            android:padding="@dimen/grid_vertical_spacing"
+            android:text="FF/FF/FFFF"
+            android:textColor="@color/colorWhite"
+            android:textSize="15sp" />
+
+
+        <TextView
+            android:id="@+id/tvVoteAverage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:background="@color/colorSilver"
+            android:padding="@dimen/grid_horizontal_spacing" />
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/movie_overview_height">
+
+        <TextView
+            android:id="@+id/tvOverview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/grid_vertical_spacing"
+            android:scrollbars="vertical"
+            android:text="TextView" />
+    </ScrollView>
+
+</LinearLayout>
