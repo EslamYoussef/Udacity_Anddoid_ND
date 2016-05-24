@@ -42,5 +42,4 @@ captures/
 /Projects/MovieApp/*.properties
 /Projects/MovieApp/gradle/wrapper/*.jar
 /Projects/MovieApp/gradle/wrapper/*.properties
-/Projects/MovieApp/*
 /Projects/MovieApp/*.bat
