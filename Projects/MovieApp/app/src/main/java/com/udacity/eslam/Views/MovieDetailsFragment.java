@@ -21,11 +21,20 @@ import com.udacity.eslam.Utility.Values;
 
 import org.w3c.dom.Text;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 
 public class MovieDetailsFragment extends Fragment {
     private Movie mSelectedMovie;
-    TextView tvTitle, tvOverview, tvReleaseDate;
+    @BindView(R.id.tvOverview)
+    TextView tvOverview;
+    @BindView(R.id.tvDate)
+    TextView tvReleaseDate;
+    @BindView(R.id.ivMovieBackDrop)
     ImageView ivMovieBackDrop;
+
+    @BindView(R.id.tvVoteAverage)
     TextView tvVoteAverage;
 
     @Override
@@ -43,6 +52,7 @@ public class MovieDetailsFragment extends Fragment {
         mSelectedMovie = extras.getParcelable(Values.KEY_MOVIE);
         //Init Views
 //        tvTitle = (TextView) fragment.findViewById(R.id.tvTitle);
+        ButterKnife.bind(this, fragment);
         tvOverview = (TextView) fragment.findViewById(R.id.tvOverview);
         tvReleaseDate = (TextView) fragment.findViewById(R.id.tvDate);
         ivMovieBackDrop = (ImageView) fragment.findViewById(R.id.ivMovieBackDrop);
@@ -52,7 +62,7 @@ public class MovieDetailsFragment extends Fragment {
         if (null != mSelectedMovie) {
             //Load Movie backdrop image
             String imageURL = Values.BASE_IMG_URL + mSelectedMovie.getBackDropPath();
-            Picasso.with(getActivity()).load(imageURL).into(ivMovieBackDrop);
+            Picasso.with(getActivity()).load(imageURL).placeholder(R.drawable.loading).error(R.drawable.loading).into(ivMovieBackDrop);
 //            tvTitle.setText(mSelectedMovie.getTitle());
             //set the movie title to the Actionbar
             ((AppCompatActivity) (getActivity())).getSupportActionBar().setTitle(mSelectedMovie.getTitle());

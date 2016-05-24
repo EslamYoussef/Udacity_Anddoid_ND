@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.udacity.eslam.Adapters.MoviesAdapter;
 import com.udacity.eslam.Listeners.MovieListener;
+import com.udacity.eslam.Listeners.MovieSelectionListener;
 import com.udacity.eslam.Models.Movie;
 import com.udacity.eslam.Presenters.MoviePresenter;
 import com.udacity.eslam.R;
@@ -32,6 +33,12 @@ public class MoviesFragment extends Fragment implements MovieListener {
     private MoviePresenter mMoviePrsenter;
     ProgressDialog mProgressDialog;
     boolean isRotated = false;
+
+    public void setMovieSelectionListener(MovieSelectionListener movieSelectionListener) {
+        this.mMovieSelectionListener = movieSelectionListener;
+    }
+
+    private MovieSelectionListener mMovieSelectionListener;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -77,11 +84,9 @@ public class MoviesFragment extends Fragment implements MovieListener {
         mMoviesGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // Open DetailsActivity
-                Intent i = new Intent(getActivity(), DetailsActivity.class);
-                // Pass the selected movie to the Movie Details Activity
-                i.putExtra(Values.KEY_MOVIE, mMoviesList.get(position));
-                startActivity(i);
+                if (null != mMovieSelectionListener) {
+                    mMovieSelectionListener.setMovieSelected(mMoviesList.get(position));
+                }
             }
         });
         // Init Presenter

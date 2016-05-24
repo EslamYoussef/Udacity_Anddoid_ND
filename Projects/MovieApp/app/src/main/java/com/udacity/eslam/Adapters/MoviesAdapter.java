@@ -39,7 +39,8 @@ public class MoviesAdapter extends ArrayAdapter<Movie> {
         Movie selectedMovie = mMoviesList.get(position);
         if (null != selectedMovie) {
             String imageURL = Values.BASE_IMG_URL + selectedMovie.getPosterPath();
-            Picasso.with(mContext).load(imageURL).into(ivMoviePoster);
+
+            Picasso.with(mContext).load(imageURL).placeholder(R.drawable.loading).error(R.drawable.loading).into(ivMoviePoster);
         }
         return convertView;
     }
