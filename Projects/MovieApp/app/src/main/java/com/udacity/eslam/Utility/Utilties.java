@@ -2,6 +2,8 @@ package com.udacity.eslam.Utility;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 /**
  * Created by Eslam on 5/23/2016.
@@ -20,7 +22,19 @@ public class Utilties {
         return prefs.getString(key, Values.KEY_MODE_MOST_POPULAR);
     }
 
+    public static boolean saveUserMovieSortPreference(Context context, String value) {
+        return saveSharedPreferences(context, Values.KEY_SORT_MODE, value);
+    }
+
     public static String getUserMovieSortPreference(Context context) {
         return getStringFromSharedPreferences(context, Values.KEY_SORT_MODE);
+    }
+    public static boolean isConnected(Context context){
+        ConnectivityManager cm =
+                (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
     }
 }

@@ -14,7 +14,7 @@ public class Values {
     public static String KEY_POPULARITY = "popularity";
     public static String KEY_POSTER_PATH = "poster_path";
     public static String KEY_RELEASE_DATE = "release_date";
-    public static String KEY_RUNTIME = "runtime";
+    public static String KEY_BACKDROP_PATH = "backdrop_path";
     public static String KEY_VOTE_AVERAGE = "vote_average";
     public static String KEY_VOTE_COUNT = "vote_count";
     public static String KEY_RESULTS = "results";
@@ -23,4 +23,7 @@ public class Values {
     public static String KEY_MODE_MOST_POPULAR = "most_popular";
     public static String KEY_MODE_TOP_RATED = "top_rated";
     public static String KEY_PREF_FILE = "prefs";
+    public static String BASE_IMG_URL = "http://image.tmdb.org/t/p/w500";
+    public static String KEY_MOVIE = "movie";
+    public static String KEY_Rotated = "isRotated";
 }

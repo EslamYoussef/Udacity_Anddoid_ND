@@ -42,7 +42,6 @@ public class MovieTaskLoader extends AsyncTaskLoader<ArrayList<Movie>> {
         mContext = context;
     }
 
-
     @Override
     public ArrayList<Movie> loadInBackground() {
         mMode = Utilties.getUserMovieSortPreference(mContext);
@@ -52,7 +51,7 @@ public class MovieTaskLoader extends AsyncTaskLoader<ArrayList<Movie>> {
                     .appendQueryParameter(Values.KEY_API_KEY, BuildConfig.api_key)
                     .build();
         } else {
-            builtUri = Uri.parse(URLs.MOST_POPULAR_MOVIES_URL).buildUpon()
+            builtUri = Uri.parse(URLs.TOP_RATED_MOVIES_URL).buildUpon()
 
                     .appendQueryParameter(Values.KEY_API_KEY, BuildConfig.api_key)
                     .build();
