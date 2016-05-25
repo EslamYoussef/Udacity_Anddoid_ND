@@ -5,14 +5,10 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
-import com.udacity.eslam.Models.Movie;
 import com.udacity.eslam.Models.Review;
 import com.udacity.eslam.R;
-import com.udacity.eslam.Utility.Values;
 import com.udacity.eslam.holders.ReviewCellHolder;
 
 import java.util.ArrayList;
@@ -35,7 +31,7 @@ public class ReviewsAdapter extends ArrayAdapter<Review> {
     public View getView(int position, View convertView, ViewGroup parent) {
         ReviewCellHolder holder = new ReviewCellHolder();
         if (null == convertView) {
-            convertView = ((Activity) (mContext)).getLayoutInflater().inflate(R.layout.item_grid_movie, null, false);
+            convertView = ((Activity) (mContext)).getLayoutInflater().inflate(R.layout.item_list_review, null, false);
             holder.setTvAuthor((TextView) convertView.findViewById(R.id.tvAuthor));
             holder.setTvContent((TextView) convertView.findViewById(R.id.tvContent));
             convertView.setTag(holder);
