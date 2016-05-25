@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -59,6 +60,7 @@ public class MoviesFragment extends Fragment implements MovieListener {
         switch (item.getItemId()) {
             case R.id.most_popular:
                 Utilties.saveUserMovieSortPreference(getActivity(), Values.KEY_MODE_MOST_POPULAR);
+
                 loadMovies();
                 return true;
             case R.id.top_rated:
@@ -89,6 +91,7 @@ public class MoviesFragment extends Fragment implements MovieListener {
                 }
             }
         });
+
         // Init Presenter
         mMoviePrsenter = new MoviePresenter(getActivity(), this);
         //Check if rotated
@@ -118,6 +121,7 @@ public class MoviesFragment extends Fragment implements MovieListener {
             mMoviesAdapter.clear();
             mMoviesAdapter.addAll(moviesList);
             mMoviesAdapter.notifyDataSetChanged();
+            setActionBarTitle();
         }
     }
 
@@ -133,9 +137,13 @@ public class MoviesFragment extends Fragment implements MovieListener {
             mProgressDialog.cancel();
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        outState.putBoolean(Values.KEY_Rotated, true);
-        super.onSaveInstanceState(outState);
+    private void setActionBarTitle() {
+        //set the movie title to the Actionbar
+        String sortMode = Utilties.getUserMovieSortPreference(getActivity());
+        if (sortMode.equalsIgnoreCase(Values.KEY_MODE_MOST_POPULAR)) {
+            ((AppCompatActivity) (getActivity())).getSupportActionBar().setTitle(R.string.most_popular);
+        } else if(sortMode.equalsIgnoreCase(Values.KEY_MODE_TOP_RATED)) {
+            ((AppCompatActivity) (getActivity())).getSupportActionBar().setTitle(R.string.top_rated);
+        }
     }
 }

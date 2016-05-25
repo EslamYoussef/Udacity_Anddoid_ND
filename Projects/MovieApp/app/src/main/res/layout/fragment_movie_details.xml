@@ -54,9 +54,50 @@
             android:id="@+id/tvOverview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/grid_vertical_spacing"
+            android:padding="@dimen/movie_details_margin"
             android:scrollbars="vertical"
             android:text="TextView" />
     </ScrollView>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/movie_details_margin"
+        android:background="@color/colorSilver"
+        android:text="@string/trailers"
+        android:textSize="15dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/vpTrailers"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/movie_trailer_dimen"
+            android:background="@color/colorBlack"/>
+
+        <com.viewpagerindicator.CirclePageIndicator
+            android:id="@+id/vpIndicator"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:padding="@dimen/movie_details_margin" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/movie_details_margin"
+        android:background="@color/colorSilver"
+        android:text="@string/reviews"
+        android:textSize="15dp" />
+
+    <ListView
+        android:id="@+id/lvReviews"
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></ListView>
 </LinearLayout>

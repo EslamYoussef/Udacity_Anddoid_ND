@@ -6,6 +6,6 @@
         android:title="@string/most_popular" />
     <item
         android:id="@+id/top_rated"
-        android:orderInCategory="1"
+        android:orderInCategory="2"
         android:title="@string/top_rated" />
 </menu>
