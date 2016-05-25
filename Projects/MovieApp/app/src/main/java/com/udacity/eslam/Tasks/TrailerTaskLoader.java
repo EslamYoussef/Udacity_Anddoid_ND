@@ -45,11 +45,9 @@ public class TrailerTaskLoader extends AsyncTaskLoader<ArrayList<Trailer>> {
     public ArrayList<Trailer> loadInBackground() {
 
         Uri builtUri = null;
-
         builtUri = Uri.parse(URLs.MVDB_BASE_URL + mMovieId.toString() + "/videos").buildUpon()
                 .appendQueryParameter(Values.KEY_API_KEY, BuildConfig.api_key)
                 .build();
-
 
         URL url = null;
         // These two need to be declared outside the try/catch
@@ -154,11 +152,11 @@ public class TrailerTaskLoader extends AsyncTaskLoader<ArrayList<Trailer>> {
      */
     @Override
     protected void onStartLoading() {
-        if (mTrailersList != null) {
-            // If we currently have a result available, deliver it
-            // immediately.
-            deliverResult(mTrailersList);
-        }
+//        if (mTrailersList != null) {
+//            // If we currently have a result available, deliver it
+//            // immediately.
+//            deliverResult(mTrailersList);
+//        }
 
         forceLoad();
 

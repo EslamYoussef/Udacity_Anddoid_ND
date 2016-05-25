@@ -33,6 +33,8 @@ public class ReviewsPresenter implements LoaderManager.LoaderCallbacks<ArrayList
 
     public void loadReviews() {
         LoaderManager loaderManager = ((Activity) (mContext)).getLoaderManager();
+        if(null!=loaderManager.getLoader(LOADER_ID)&&loaderManager.getLoader(LOADER_ID).isStarted())
+            loaderManager.destroyLoader(LOADER_ID);
         loaderManager.initLoader(LOADER_ID, null, this).forceLoad();
     }
 
@@ -44,7 +46,6 @@ public class ReviewsPresenter implements LoaderManager.LoaderCallbacks<ArrayList
 
     @Override
     public void onLoadFinished(Loader<ArrayList<Review>> loader, ArrayList<Review> data) {
-
         mReviewsListener.setReviewsList(data);
 
     }

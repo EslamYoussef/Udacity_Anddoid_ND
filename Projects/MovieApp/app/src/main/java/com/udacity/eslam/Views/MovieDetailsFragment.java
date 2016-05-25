@@ -75,8 +75,6 @@ public class MovieDetailsFragment extends Fragment implements TrailersListener, 
         Bundle extras = getArguments();
         mSelectedMovie = extras.getParcelable(Values.KEY_MOVIE);
         //Init Views
-//        tvTitle = (TextView) fragment.findViewById(R.id.tvTitle);
-        ButterKnife.bind(this, fragment);
         tvOverview = (TextView) fragment.findViewById(R.id.tvOverview);
         tvReleaseDate = (TextView) fragment.findViewById(R.id.tvDate);
         ivMovieBackDrop = (ImageView) fragment.findViewById(R.id.ivMovieBackDrop);
@@ -104,24 +102,12 @@ public class MovieDetailsFragment extends Fragment implements TrailersListener, 
 
         //Load Reviews
         mReviewsPresenter = new ReviewsPresenter(getActivity(), mSelectedMovie.get_id(), this);
-        loadReviews();
+
         //Init Reviews list
         mReviewAdapter = new ReviewsAdapter(getActivity(), new ArrayList<Review>());
         lvReviews.setAdapter(mReviewAdapter);
-        //whe user click on review item, open the full review on the browser
-//        lvReviews.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                try {
-//                    Intent intent = new Intent();
-//                    intent.setAction(Intent.ACTION_VIEW);
-//                    intent.setData(Uri.parse(mR);
-//                    startActivity(intent);
-//                } catch (Exception e) {
-//                    Toast.makeText(getActivity(), R.string.cannot_play_trailer, Toast.LENGTH_LONG).show();
-//                }
-//            }
-//        });
+        loadReviews();
+
         return fragment;
     }
 
@@ -150,7 +136,6 @@ public class MovieDetailsFragment extends Fragment implements TrailersListener, 
         }
 
     }
-
 
     @Override
     public void setTrailersList(ArrayList<Trailer> trailersList) {

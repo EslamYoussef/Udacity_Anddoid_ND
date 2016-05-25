@@ -33,6 +33,8 @@ public class TrailersPresenter implements LoaderManager.LoaderCallbacks<ArrayLis
 
     public void loadTrailers() {
         LoaderManager loaderManager = ((Activity) (mContext)).getLoaderManager();
+        if(null!=loaderManager.getLoader(LOADER_ID)&&loaderManager.getLoader(LOADER_ID).isStarted())
+            loaderManager.destroyLoader(LOADER_ID);
         loaderManager.initLoader(LOADER_ID, null, this).forceLoad();
     }
 
@@ -46,6 +48,7 @@ public class TrailersPresenter implements LoaderManager.LoaderCallbacks<ArrayLis
     public void onLoadFinished(Loader<ArrayList<Trailer>> loader, ArrayList<Trailer> data) {
 
         mTrailersListener.setTrailersList(data);
+
 
     }
 
