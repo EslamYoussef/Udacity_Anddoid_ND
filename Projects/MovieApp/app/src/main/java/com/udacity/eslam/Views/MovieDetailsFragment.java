@@ -2,6 +2,7 @@ package com.udacity.eslam.Views;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,17 +14,23 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
+import com.udacity.eslam.Adapters.ReviewsAdapter;
 import com.udacity.eslam.Adapters.TrailersAdapter;
+import com.udacity.eslam.Listeners.ReviewsListener;
 import com.udacity.eslam.Listeners.TrailersListener;
 import com.udacity.eslam.Models.Movie;
+import com.udacity.eslam.Models.Review;
 import com.udacity.eslam.Models.Trailer;
 import com.udacity.eslam.Presenters.MoviePresenter;
+import com.udacity.eslam.Presenters.ReviewsPresenter;
 import com.udacity.eslam.Presenters.TrailersPresenter;
 import com.udacity.eslam.R;
 import com.udacity.eslam.Utility.Utilties;
@@ -39,17 +46,20 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class MovieDetailsFragment extends Fragment implements TrailersListener {
+public class MovieDetailsFragment extends Fragment implements TrailersListener, ReviewsListener {
     private Movie mSelectedMovie;
 
-    TextView tvOverview;
-    TextView tvReleaseDate;
-    ImageView ivMovieBackDrop;
-    TextView tvVoteAverage;
-    ViewPager vpTrailers;
+    private TextView tvOverview;
+    private TextView tvReleaseDate;
+    private ImageView ivMovieBackDrop;
+    private TextView tvVoteAverage;
+    private ViewPager vpTrailers;
     private PagerAdapter mPagerAdapter;
     private TrailersPresenter mTrailersPresenter;
-    CirclePageIndicator titleIndicator;
+    private ReviewsPresenter mReviewsPresenter;
+    private CirclePageIndicator titleIndicator;
+    private ListView lvReviews;
+    private ReviewsAdapter mReviewAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -72,6 +82,7 @@ public class MovieDetailsFragment extends Fragment implements TrailersListener {
         ivMovieBackDrop = (ImageView) fragment.findViewById(R.id.ivMovieBackDrop);
         tvVoteAverage = (TextView) fragment.findViewById(R.id.tvVoteAverage);
         vpTrailers = (ViewPager) fragment.findViewById(R.id.vpTrailers);
+        lvReviews = (ListView) fragment.findViewById(R.id.lvReviews);
 //Bind the title indicator to the adapter
         titleIndicator = (CirclePageIndicator) fragment.findViewById(R.id.vpIndicator);
 
@@ -90,17 +101,49 @@ public class MovieDetailsFragment extends Fragment implements TrailersListener {
         //Load Trailers
         mTrailersPresenter = new TrailersPresenter(getActivity(), mSelectedMovie.get_id(), this);
         loadTrailers();
-//        mPagerAdapter = new TrailersAdapter(getActivity().getSupportFragmentManager(), new ArrayList<Trailer>());
-//        vpTrailers.setAdapter(mPagerAdapter);
+
+        //Load Reviews
+        mReviewsPresenter = new ReviewsPresenter(getActivity(), mSelectedMovie.get_id(), this);
+        loadReviews();
+        //Init Reviews list
+        mReviewAdapter = new ReviewsAdapter(getActivity(), new ArrayList<Review>());
+        lvReviews.setAdapter(mReviewAdapter);
+        //whe user click on review item, open the full review on the browser
+//        lvReviews.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                try {
+//                    Intent intent = new Intent();
+//                    intent.setAction(Intent.ACTION_VIEW);
+//                    intent.setData(Uri.parse(mR);
+//                    startActivity(intent);
+//                } catch (Exception e) {
+//                    Toast.makeText(getActivity(), R.string.cannot_play_trailer, Toast.LENGTH_LONG).show();
+//                }
+//            }
+//        });
         return fragment;
     }
 
     private void loadTrailers() {
-        //Load movies in separate thread
+        //Load Trailers in separate thread
         if (Utilties.isConnected(getActivity())) {
             if (null == mTrailersPresenter)
                 mTrailersPresenter = new TrailersPresenter(getActivity(), mSelectedMovie.get_id(), this);
             mTrailersPresenter.loadTrailers();
+        } else {
+            Toast.makeText(getActivity(), R.string.no_connection, Toast.LENGTH_LONG).show();
+            getActivity().finish();
+        }
+
+    }
+
+    private void loadReviews() {
+        //Load Reviews in separate thread
+        if (Utilties.isConnected(getActivity())) {
+            if (null == mReviewsPresenter)
+                mReviewsPresenter = new ReviewsPresenter(getActivity(), mSelectedMovie.get_id(), this);
+            mReviewsPresenter.loadReviews();
         } else {
             Toast.makeText(getActivity(), R.string.no_connection, Toast.LENGTH_LONG).show();
             getActivity().finish();
@@ -118,4 +161,13 @@ public class MovieDetailsFragment extends Fragment implements TrailersListener {
         }
     }
 
+    @Override
+    public void setReviewsList(ArrayList<Review> reviewsList) {
+        if (null != reviewsList) {
+            mReviewAdapter.clear();
+            mReviewAdapter.addAll(reviewsList);
+            mReviewAdapter.notifyDataSetChanged();
+
+        }
+    }
 }

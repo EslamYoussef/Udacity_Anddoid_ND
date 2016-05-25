@@ -18,6 +18,9 @@ public class Values {
     public static String KEY_VOTE_AVERAGE = "vote_average";
     public static String KEY_VOTE_COUNT = "vote_count";
     public static String KEY_NAME = "name";
+    public static String KEY_AUTHOR = "author";
+    public static String KEY_CONTENT = "content";
+    public static String KEY_URL= "url";
     public static String KEY_TRAILER_KEY = "key";
     public static String KEY_RESULTS = "results";
     public static String KEY_API_KEY = "api_key";
