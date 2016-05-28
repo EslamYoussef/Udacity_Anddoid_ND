@@ -2,11 +2,13 @@ package com.udacity.eslam.Tasks;
 
 import android.content.AsyncTaskLoader;
 import android.content.Context;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.util.Log;
 
 import com.udacity.eslam.BuildConfig;
 import com.udacity.eslam.Models.Movie;
+import com.udacity.eslam.R;
 import com.udacity.eslam.Utility.URLs;
 import com.udacity.eslam.Utility.Utilties;
 import com.udacity.eslam.Utility.Values;
@@ -45,8 +47,9 @@ public class MovieTaskLoader extends AsyncTaskLoader<ArrayList<Movie>> {
     @Override
     public ArrayList<Movie> loadInBackground() {
         mMode = Utilties.getUserMovieSortPreference(mContext);
+        Resources res = mContext.getResources();
         Uri builtUri = null;
-        if (mMode.equalsIgnoreCase(Values.KEY_MODE_MOST_POPULAR)) {
+        if (mMode.equalsIgnoreCase(res.getString(R.string.most_popular))) {
             builtUri = Uri.parse(URLs.MOST_POPULAR_MOVIES_URL).buildUpon()
                     .appendQueryParameter(Values.KEY_API_KEY, BuildConfig.api_key)
                     .build();
@@ -161,13 +164,7 @@ public class MovieTaskLoader extends AsyncTaskLoader<ArrayList<Movie>> {
      */
     @Override
     protected void onStartLoading() {
-        if (mMoviesList != null) {
-            // If we currently have a result available, deliver it
-            // immediately.
-            deliverResult(mMoviesList);
-        }
 
-        forceLoad();
 
     }
 

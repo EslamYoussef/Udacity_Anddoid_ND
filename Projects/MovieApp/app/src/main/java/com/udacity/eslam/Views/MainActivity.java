@@ -12,11 +12,11 @@ import com.udacity.eslam.R;
 import com.udacity.eslam.Utility.Values;
 
 
-public class MainActivity extends AppCompatActivity implements MovieSelectionListener {
+class MainActivity extends AppCompatActivity implements MovieSelectionListener {
     FrameLayout flMoviesFragment;
     private String FRAGMENT_TAG = "movie_fragment";
 
-
+    MovieDetailsFragment mFragment;
     private boolean mIsTwoPaneUI = true;
 
     @Override
@@ -39,8 +39,10 @@ public class MainActivity extends AppCompatActivity implements MovieSelectionLis
     @Override
     public void setMovieSelected(Movie selectedMovie) {
         if (mIsTwoPaneUI) {
-            MovieDetailsFragment mFragment = new MovieDetailsFragment();
+
+            mFragment = new MovieDetailsFragment();
             //Put the selected movie as extra
+
             Bundle extras = new Bundle();
             extras.putParcelable(Values.KEY_MOVIE, selectedMovie);
             mFragment.setArguments(extras);
@@ -53,4 +55,12 @@ public class MainActivity extends AppCompatActivity implements MovieSelectionLis
             startActivity(i);
         }
     }
+
+    @Override
+    public void refreshDetails() {
+        if (mFragment != null)
+            getSupportFragmentManager().beginTransaction().remove(mFragment);
+    }
+
+
 }

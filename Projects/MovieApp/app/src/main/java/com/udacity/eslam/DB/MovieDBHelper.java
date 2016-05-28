@@ -31,8 +31,8 @@ public class MovieDBHelper extends SQLiteOpenHelper {
                 MovieContract.MovieEntry.COLUMN_RELEASE_DATE + " TEXT NOT NULL, " +
                 MovieContract.MovieEntry.COLUMN_POSTER_PATH + " TEXT NOT NULL, " +
                 MovieContract.MovieEntry.COLUMN_BACKDROP_PATH + " REAL NOT NULL, " +
-                MovieContract.MovieEntry.COLUMN_VOTE_AVG + " REAL NOT NULL " +
-                MovieContract.MovieEntry.COLUMN_POPULARITY + " REAL NOT NULL " +
+                MovieContract.MovieEntry.COLUMN_VOTE_AVG + " REAL NOT NULL, " +
+                MovieContract.MovieEntry.COLUMN_POPULARITY + " REAL NOT NULL, " +
                 MovieContract.MovieEntry.COLUMN_VOTE_COUNT + " NUMBER NOT NULL )";
         sqLiteDatabase.execSQL(SQL_CREATE_LOCATION_Movie);
 
@@ -62,7 +62,7 @@ public class MovieDBHelper extends SQLiteOpenHelper {
     public Movie getMovieByID(Double movieID) {
         Movie movie = null;
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(MovieContract.MovieEntry.TABLE_NAME, null, MovieContract.MovieEntry.COLUMN_ID + "=", new String[]{movieID.toString()}, null, null, null);
+        Cursor cursor = db.query(MovieContract.MovieEntry.TABLE_NAME, null, MovieContract.MovieEntry.COLUMN_ID + "=?", new String[]{movieID.toString()}, null, null, null);
         ArrayList<Movie> moviesList = getMoviesListFromCursor(cursor);
         if (moviesList.size() > 0) {
             movie = moviesList.get(0);
@@ -71,10 +71,11 @@ public class MovieDBHelper extends SQLiteOpenHelper {
         return movie;
     }
 
-    public ArrayList<Movie> getAllMovies(Double movieID) {
+    public ArrayList<Movie> getAllMovies() {
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(MovieContract.MovieEntry.TABLE_NAME, null, null, null, null, null, null);
+
         return getMoviesListFromCursor(cursor);
     }
 
@@ -84,6 +85,7 @@ public class MovieDBHelper extends SQLiteOpenHelper {
         if (null != cursor && cursor.getCount() > 0) {
             cursor.moveToFirst();
             do {
+                movie = new Movie();
                 movie.set_id(cursor.getDouble(cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_ID)));
                 movie.setTitle(cursor.getString(cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_TITLE)));
                 movie.setOverview(cursor.getString(cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_OVERVIEW)));
@@ -93,16 +95,19 @@ public class MovieDBHelper extends SQLiteOpenHelper {
                 movie.setPopularity(cursor.getDouble(cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_POPULARITY)));
                 movie.setVotCount(cursor.getDouble(cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_VOTE_COUNT)));
                 movie.setVoteAverage(cursor.getDouble(cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_VOTE_AVG)));
-
+                moviesList.add(movie);
             } while (cursor.moveToNext());
 
         }
+        cursor.close();
         return moviesList;
     }
 
     public int removeMovie(Double movieID) {
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete(MovieContract.MovieEntry.TABLE_NAME, MovieContract.MovieEntry.COLUMN_ID + "=", new String[]{movieID.toString()});
+        int numberOfDeletedRows = db.delete(MovieContract.MovieEntry.TABLE_NAME, MovieContract.MovieEntry.COLUMN_ID + "=?", new String[]{movieID.toString()});
+        db.close();
+        return numberOfDeletedRows;
     }
 
     @Override

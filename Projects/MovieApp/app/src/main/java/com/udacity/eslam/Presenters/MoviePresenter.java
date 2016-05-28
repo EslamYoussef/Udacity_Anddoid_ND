@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Loader;
 import android.os.Bundle;
 
+import com.udacity.eslam.DB.MovieDBHelper;
 import com.udacity.eslam.Listeners.MovieListener;
 import com.udacity.eslam.Models.Movie;
 import com.udacity.eslam.Tasks.MovieTaskLoader;
@@ -19,7 +20,7 @@ import java.util.ArrayList;
 public class MoviePresenter implements LoaderManager.LoaderCallbacks<ArrayList<Movie>> {
     private Context mContext;
     private MovieListener mMovieListener;
-
+    private MovieDBHelper mMovieDBHelper;
     private static int LOADER_ID = 0;
 
     public MoviePresenter(Context context, MovieListener movieListener) {
@@ -29,12 +30,30 @@ public class MoviePresenter implements LoaderManager.LoaderCallbacks<ArrayList<M
 
     public void loadMovies() {
         LoaderManager loaderManager = ((Activity) (mContext)).getLoaderManager();
-//        if (null == loaderManager.getLoader(LOADER_ID) || !loaderManager.getLoader(LOADER_ID).isStarted()) {
-            loaderManager.initLoader(LOADER_ID, null, this).forceLoad();
-            mMovieListener.startLoading();
-//        }
+        loaderManager.initLoader(LOADER_ID, null, this).forceLoad();
+        mMovieListener.startLoading();
+
     }
 
+    public void getFavoriteMovies() {
+        mMovieDBHelper = new MovieDBHelper(mContext);
+        mMovieListener.setMoviesList(mMovieDBHelper.getAllMovies());
+    }
+
+    public boolean isFavoriteMovie(Double movieID) {
+        mMovieDBHelper = new MovieDBHelper(mContext);
+        return mMovieDBHelper.getMovieByID(movieID) != null;
+    }
+
+    public boolean saveMovieAsFavorite(Movie movie) {
+        mMovieDBHelper = new MovieDBHelper(mContext);
+        return mMovieDBHelper.insertMovie(movie) > 0;
+    }
+
+    public boolean unFavoriteMovie(Double movieId) {
+        mMovieDBHelper = new MovieDBHelper(mContext);
+        return mMovieDBHelper.removeMovie(movieId) > 0;
+    }
 
     @Override
     public Loader<ArrayList<Movie>> onCreateLoader(int id, Bundle args) {

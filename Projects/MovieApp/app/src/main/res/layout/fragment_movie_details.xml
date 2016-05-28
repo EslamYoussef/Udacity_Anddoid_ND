@@ -48,21 +48,22 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
                     android:background="@color/colorSilver"
                     android:padding="@dimen/grid_horizontal_spacing" />
 
                 <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@color/colorSilver"
-                    android:src="@drawable/empty_heart"
-                    android:padding="@dimen/activity_vertical_margin"
+                    android:id="@+id/ibFavoritedMovie"
+                    android:layout_width="@dimen/favorite_btn_dimen"
+                    android:layout_height="@dimen/favorite_btn_dimen"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
                     android:layout_alignParentTop="true"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:id="@+id/imageButton" />
+                    android:padding="@dimen/movie_details_margin"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/unfavorited" />
+
             </RelativeLayout>
 
 
@@ -80,7 +81,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.3"
+        android:layout_weight="0.6"
         android:orientation="vertical">
 
         <TextView
@@ -110,13 +111,6 @@
                 android:padding="@dimen/movie_details_margin" />
         </LinearLayout>
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.3"
-        android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"

@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import com.udacity.eslam.R;
+
 /**
  * Created by Eslam on 5/23/2016.
  */
@@ -19,7 +21,7 @@ public class Utilties {
 
     public static String getStringFromSharedPreferences(Context context, String key) {
         SharedPreferences prefs = context.getSharedPreferences(Values.KEY_PREF_FILE, Context.MODE_PRIVATE);
-        return prefs.getString(key, Values.KEY_MODE_MOST_POPULAR);
+        return prefs.getString(key, context.getResources().getString(R.string.most_popular));
     }
 
     public static boolean saveUserMovieSortPreference(Context context, String value) {
@@ -29,9 +31,10 @@ public class Utilties {
     public static String getUserMovieSortPreference(Context context) {
         return getStringFromSharedPreferences(context, Values.KEY_SORT_MODE);
     }
-    public static boolean isConnected(Context context){
+
+    public static boolean isConnected(Context context) {
         ConnectivityManager cm =
-                (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         return activeNetwork != null &&

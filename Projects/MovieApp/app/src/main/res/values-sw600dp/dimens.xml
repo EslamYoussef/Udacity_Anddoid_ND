@@ -12,5 +12,6 @@
     <dimen name="movie_trailer_padding">5dp</dimen>
     <dimen name="movie_trailer_image_dimen">70dp</dimen>
     <dimen name="movie_details_margin">10dp</dimen>
+    <dimen name="favorite_btn_dimen">75dp</dimen>
 
 </resources>

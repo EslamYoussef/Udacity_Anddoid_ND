@@ -17,9 +17,7 @@ public class DetailsActivity extends AppCompatActivity {
         //Init Actionbar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        //Init Actionbar
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
+
         if (savedInstanceState == null) {
             //Inflate the Movies Details Fragment
             MovieDetailsFragment mFragment = new MovieDetailsFragment();

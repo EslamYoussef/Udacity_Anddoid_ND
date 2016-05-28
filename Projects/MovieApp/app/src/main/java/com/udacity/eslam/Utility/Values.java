@@ -20,13 +20,12 @@ public class Values {
     public static String KEY_NAME = "name";
     public static String KEY_AUTHOR = "author";
     public static String KEY_CONTENT = "content";
-    public static String KEY_URL= "url";
+    public static String KEY_URL = "url";
     public static String KEY_TRAILER_KEY = "key";
     public static String KEY_RESULTS = "results";
     public static String KEY_API_KEY = "api_key";
     public static String KEY_SORT_MODE = "sort-mode";
-    public static String KEY_MODE_MOST_POPULAR = "most_popular";
-    public static String KEY_MODE_TOP_RATED = "top_rated";
+
     public static String KEY_PREF_FILE = "prefs";
     public static String BASE_IMG_URL = "http://image.tmdb.org/t/p/w500";
     public static String BASE_YOUTUBE = "https://www.youtube.com/watch?v=";

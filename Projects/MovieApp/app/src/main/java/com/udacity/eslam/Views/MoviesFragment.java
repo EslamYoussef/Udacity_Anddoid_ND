@@ -2,6 +2,7 @@ package com.udacity.eslam.Views;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -57,21 +58,23 @@ public class MoviesFragment extends Fragment implements MovieListener {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Resources res = getResources();
         switch (item.getItemId()) {
             case R.id.most_popular:
-                Utilties.saveUserMovieSortPreference(getActivity(), Values.KEY_MODE_MOST_POPULAR);
-
+                Utilties.saveUserMovieSortPreference(getActivity(), getResources().getString(R.string.most_popular));
                 loadMovies();
                 return true;
             case R.id.top_rated:
-                Utilties.saveUserMovieSortPreference(getActivity(), Values.KEY_MODE_TOP_RATED);
+                Utilties.saveUserMovieSortPreference(getActivity(), getResources().getString(R.string.top_rated));
                 loadMovies();
+                return true;
+            case R.id.favorite:
+                Utilties.saveUserMovieSortPreference(getActivity(), getResources().getString(R.string.favorite));
+                loadFavoriteMovies();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
-
         }
-
     }
 
     @Override
@@ -95,8 +98,11 @@ public class MoviesFragment extends Fragment implements MovieListener {
         // Init Presenter
         mMoviePrsenter = new MoviePresenter(getActivity(), this);
         //Check if rotated
-
-        loadMovies();
+        if (Utilties.getUserMovieSortPreference(getActivity()).equalsIgnoreCase(getResources().getString(R.string.favorite))) {
+            loadFavoriteMovies();
+        } else {
+            loadMovies();
+        }
 
         return fragment;
 
@@ -110,9 +116,15 @@ public class MoviesFragment extends Fragment implements MovieListener {
             mMoviePrsenter.loadMovies();
         } else {
             Toast.makeText(getActivity(), R.string.no_connection, Toast.LENGTH_LONG).show();
-            getActivity().finish();
+            //show offline-saved favorite movies
+            loadFavoriteMovies();
         }
+    }
 
+    public void loadFavoriteMovies() {
+        if (null == mMoviePrsenter)
+            mMoviePrsenter = new MoviePresenter(getActivity(), this);
+        mMoviePrsenter.getFavoriteMovies();
     }
 
     @Override
@@ -123,12 +135,24 @@ public class MoviesFragment extends Fragment implements MovieListener {
             mMoviesAdapter.notifyDataSetChanged();
             setActionBarTitle();
         }
+        if (mMovieSelectionListener!=null){
+            mMovieSelectionListener.refreshDetails();
+        }
     }
 
     @Override
     public void startLoading() {
         mProgressDialog = new ProgressDialog(getActivity());
         mProgressDialog.show();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //Re-Load Favorite movies
+        if (Utilties.getUserMovieSortPreference(getActivity()).equalsIgnoreCase(getResources().getString(R.string.favorite))) {
+            loadFavoriteMovies();
+        }
     }
 
     @Override
@@ -140,10 +164,7 @@ public class MoviesFragment extends Fragment implements MovieListener {
     private void setActionBarTitle() {
         //set the movie title to the Actionbar
         String sortMode = Utilties.getUserMovieSortPreference(getActivity());
-        if (sortMode.equalsIgnoreCase(Values.KEY_MODE_MOST_POPULAR)) {
-            ((AppCompatActivity) (getActivity())).getSupportActionBar().setTitle(R.string.most_popular);
-        } else if(sortMode.equalsIgnoreCase(Values.KEY_MODE_TOP_RATED)) {
-            ((AppCompatActivity) (getActivity())).getSupportActionBar().setTitle(R.string.top_rated);
-        }
+        ((AppCompatActivity) (getActivity())).getSupportActionBar().setTitle(sortMode);
+
     }
 }
