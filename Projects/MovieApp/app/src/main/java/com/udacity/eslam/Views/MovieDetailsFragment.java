@@ -65,6 +65,9 @@ public class MovieDetailsFragment extends Fragment implements TrailersListener, 
     private MoviePresenter mMoviePresenter;
     private ShareActionProvider mShareActionProvider;
     private ArrayList<Trailer> mMovieTrailers;
+    private Intent mShareIntent;
+    Menu menu;
+    MenuInflater inflater;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -190,13 +193,16 @@ public class MovieDetailsFragment extends Fragment implements TrailersListener, 
             vpTrailers.setAdapter(mPagerAdapter);
             titleIndicator.setViewPager(vpTrailers);
         }
+        //Re inflate share action provider
+        this.menu.removeItem(R.id.action_share);
+        onCreateOptionsMenu(menu, inflater);
+
 //        // Now share option should be ready
-//        setShareIntent(createShareIntent());
-        try {
-            this.getActivity().invalidateOptionsMenu();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+//        String url = Values.BASE_YOUTUBE + mMovieTrailers.get(0).getKey();
+//        mShareIntent.putExtra(Intent.EXTRA_SUBJECT,
+//                url);
+//        mShareActionProvider.setShareIntent(mShareIntent);
+
     }
 
     @Override
@@ -223,22 +229,12 @@ public class MovieDetailsFragment extends Fragment implements TrailersListener, 
 
     }
 
-    //    @Override
-//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-//        // Inflate menu resource file.
-//        inflater.inflate(R.menu.movie_details_options, menu);
-//
-//        // Locate MenuItem with ShareActionProvider
-//        MenuItem item = menu.findItem(R.id.menu_item_share);
-//
-//        // Fetch and store ShareActionProvider
-//        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
-//        setShareIntent(createShareIntent());
-//    }
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.movie_details_options, menu);
-        MenuItem menuItem = menu.findItem(R.id.menu_item_share);
+        this.menu = menu;
+        this.inflater = inflater;
+        MenuItem menuItem = menu.findItem(R.id.action_share);
         ShareActionProvider mShareActionProvider =
                 (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
         if (mShareActionProvider != null) {
@@ -257,15 +253,20 @@ public class MovieDetailsFragment extends Fragment implements TrailersListener, 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return super.onOptionsItemSelected(item);
+
     }
 
-    private Intent createShareIntent() {
-        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-//        if (mSelectedMovie != null)
 
-        if (mMovieTrailers != null && mMovieTrailers.size() > 0)
-            shareIntent.putExtra(Intent.EXTRA_TEXT,
-                    Values.BASE_YOUTUBE + mMovieTrailers.get(0).getKey());
-        return shareIntent;
+    private Intent createShareIntent() {
+        mShareIntent = new Intent(Intent.ACTION_SEND);
+//        if (mSelectedMovie != null)
+//            mShareIntent.putExtra(Intent.EXTRA_TEXT, mSelectedMovie.getTitle());
+        mShareIntent.setType("text/plain");
+        if (mMovieTrailers != null && mMovieTrailers.size() > 0) {
+            String url = Values.BASE_YOUTUBE + mMovieTrailers.get(0).getKey();
+            mShareIntent.putExtra(Intent.EXTRA_TEXT,
+                    url);
+        }
+        return mShareIntent;
     }
 }

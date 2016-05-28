@@ -135,9 +135,7 @@ public class MoviesFragment extends Fragment implements MovieListener {
             mMoviesAdapter.notifyDataSetChanged();
             setActionBarTitle();
         }
-        if (mMovieSelectionListener!=null){
-            mMovieSelectionListener.refreshDetails();
-        }
+
     }
 
     @Override

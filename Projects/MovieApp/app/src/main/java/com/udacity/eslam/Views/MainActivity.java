@@ -56,11 +56,7 @@ class MainActivity extends AppCompatActivity implements MovieSelectionListener {
         }
     }
 
-    @Override
-    public void refreshDetails() {
-        if (mFragment != null)
-            getSupportFragmentManager().beginTransaction().remove(mFragment);
-    }
+
 
 
 }

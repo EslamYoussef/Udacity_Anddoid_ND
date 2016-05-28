@@ -8,5 +8,5 @@ import com.udacity.eslam.Models.Movie;
 
 public interface MovieSelectionListener {
     void setMovieSelected(Movie selectedMovie);
-void refreshDetails();
+
 }
