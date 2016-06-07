@@ -1,16 +1,20 @@
 package com.sam_chordas.android.stockhawk.service;
 
+import android.content.ContentProviderOperation;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.OperationApplicationException;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
+import android.os.Handler;
 import android.os.RemoteException;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.GcmTaskService;
 import com.google.android.gms.gcm.TaskParams;
+import com.sam_chordas.android.stockhawk.R;
 import com.sam_chordas.android.stockhawk.data.QuoteColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteProvider;
 import com.sam_chordas.android.stockhawk.rest.Utils;
@@ -21,6 +25,7 @@ import com.squareup.okhttp.Response;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 
 /**
  * Created by sam_chordas on 9/30/15.
@@ -129,10 +134,25 @@ public class StockTaskService extends GcmTaskService {
                         mContext.getContentResolver().update(QuoteProvider.Quotes.CONTENT_URI, contentValues,
                                 null, null);
                     }
-                    mContext.getContentResolver().applyBatch(QuoteProvider.AUTHORITY,
-                            Utils.quoteJsonToContentVals(getResponse));
+                    ArrayList<ContentProviderOperation> batchOperations = Utils.quoteJsonToContentVals(getResponse);
+                    //Check that the newest loaded symbol is valid "the last one in the list"
+                    if (null != batchOperations && batchOperations.size() > 0&&null!=batchOperations.get(batchOperations.size()-1))
+                        mContext.getContentResolver().applyBatch(QuoteProvider.AUTHORITY,
+                                batchOperations);
+                    else {
+                        // Show Toast indicating that the entered Symbol is invalid symbol
+                        Handler h = new Handler(mContext.getMainLooper());
+
+                        h.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(mContext, R.string.invalid_qoute_symbol, Toast.LENGTH_LONG).show();
+                            }
+                        });
+                        Log.e(LOG_TAG,  "Invalid_qoute_symbol");
+                    }
                 } catch (RemoteException | OperationApplicationException e) {
-                    Log.e(LOG_TAG, "Error applying batch insert", e);
+                    Log.e("Symbol", "Error applying batch insert", e);
                 }
             } catch (IOException e) {
                 e.printStackTrace();

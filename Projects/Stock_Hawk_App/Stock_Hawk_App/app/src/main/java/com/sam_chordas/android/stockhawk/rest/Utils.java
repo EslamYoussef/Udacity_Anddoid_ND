@@ -36,7 +36,10 @@ public class Utils {
                 if (count == 1) {
                     jsonObject = jsonObject.getJSONObject("results")
                             .getJSONObject("quote");
-                    batchOperations.add(buildBatchOperation(jsonObject));
+
+//                    batchOperations.add(buildBatchOperation(jsonObject));
+                    ContentProviderOperation buildBatchOperation = buildBatchOperation(jsonObject);
+                    batchOperations.add(buildBatchOperation);
                 } else {
                     resultsArray = jsonObject.getJSONObject("results").getJSONArray("quote");
 
@@ -44,8 +47,7 @@ public class Utils {
                         for (int i = 0; i < resultsArray.length(); i++) {
                             jsonObject = resultsArray.getJSONObject(i);
                             ContentProviderOperation buildBatchOperation = buildBatchOperation(jsonObject);
-                            if (null != buildBatchOperation)
-                                batchOperations.add(buildBatchOperation);
+                            batchOperations.add(buildBatchOperation);
                         }
                     }
                 }
@@ -86,7 +88,7 @@ public class Utils {
                 QuoteProvider.Quotes.CONTENT_URI);
         try {
             String change = jsonObject.getString("Change");
-            if("null".equals(change))
+            if ("null".equals(change))
                 return null;
             builder.withValue(QuoteColumns.SYMBOL, jsonObject.getString("symbol"));
             builder.withValue(QuoteColumns.BIDPRICE, truncateBidPrice(jsonObject.getString("Bid")));
