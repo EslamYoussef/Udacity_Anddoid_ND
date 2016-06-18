@@ -2,47 +2,199 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="72dp"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
     android:gravity="center_vertical"
-    android:orientation="horizontal"
+    android:minHeight="72dp"
+    android:orientation="vertical"
     android:paddingLeft="16dp"
     android:paddingRight="16dp">
 
-    <TextView
-        android:id="@+id/stock_symbol"
-        style="@style/StockSymbolTextStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:gravity="left|center_vertical|start"
-        tools:text="GOOG" />
-
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="right|end">
+        android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/bid_price"
-            style="@style/BidPriceTextStyle"
+            android:id="@+id/stock_symbol"
+            style="@style/StockSymbolTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="left|start"
 
-            android:paddingRight="10sp"
-            tools:text="1000.00" />
+            android:gravity="left|center_vertical|start"
+            tools:text="GOOG" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="right|end">
+
+            <TextView
+                android:id="@+id/bid_price"
+                style="@style/BidPriceTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left|start"
+
+                android:paddingRight="10sp"
+                tools:text="1000.00" />
+
+            <TextView
+                android:id="@+id/change"
+                style="@style/PercentChangeTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/percent_change_pill"
+
+                android:gravity="right|end"
+                android:paddingLeft="3dp"
+                android:paddingRight="3dp"
+                tools:text="100%" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlStockDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
 
         <TextView
-            android:id="@+id/change"
-            style="@style/PercentChangeTextStyle"
+            android:id="@+id/daysRange_Label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/percent_change_pill"
-
-            android:gravity="right|end"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
             android:paddingLeft="3dp"
             android:paddingRight="3dp"
-            tools:text="100%" />
-    </LinearLayout>
+            android:text="@string/days_range" />
+
+        <TextView
+            android:id="@+id/daysRange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/daysRange_Label"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp"
+            android:text="36-73" />
+
+        <TextView
+            android:id="@+id/YearRange_Label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/daysRange_Label"
+            android:layout_marginTop="5dp"
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp"
+            android:text="@string/year_range" />
+
+        <TextView
+            android:id="@+id/yearRange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/YearRange_Label"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp"
+            android:text="36-73" />
+
+        <TextView
+            android:id="@+id/previousClose_Label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/YearRange_Label"
+            android:layout_marginTop="5dp"
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp"
+            android:text="@string/previous_closing" />
+
+        <TextView
+            android:id="@+id/previousClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/previousClose_Label"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp"
+            android:text="36-73" />
+
+        <TextView
+            android:id="@+id/lastTrade_Label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/previousClose_Label"
+            android:layout_marginTop="5dp"
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp"
+            android:text="@string/last_trade_date" />
+
+        <TextView
+            android:id="@+id/lastTrade"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/lastTrade_Label"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp"
+            android:text="36-73" />
+
+        <TextView
+            android:id="@+id/priceEstimateCurrYear_Label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/lastTrade_Label"
+            android:layout_marginTop="5dp"
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp"
+            android:text="@string/price_eps_estimate_current_year" />
+
+        <TextView
+            android:id="@+id/priceEstimateCurrYear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/priceEstimateCurrYear_Label"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp"
+            android:text="36-73" />
+
+        <TextView
+            android:id="@+id/priceEstimateNXTYear_Label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/priceEstimateCurrYear_Label"
+            android:layout_marginTop="5dp"
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp"
+            android:text="@string/price_eps_estimate_next_year" />
+
+        <TextView
+            android:id="@+id/priceEstimateNXTYear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/priceEstimateNXTYear_Label"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp"
+            android:text="36-73" />
+    </RelativeLayout>
 </LinearLayout>

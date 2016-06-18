@@ -101,7 +101,12 @@ public class Utils {
             } else {
                 builder.withValue(QuoteColumns.ISUP, 1);
             }
-
+            builder.withValue(QuoteColumns.DAYS_RANGE, jsonObject.getString("DaysRange"));
+            builder.withValue(QuoteColumns.LAST_TRADE_Date, jsonObject.getString("LastTradeDate"));
+            builder.withValue(QuoteColumns.YEAR_RANGE, jsonObject.getString("YearRange"));
+            builder.withValue(QuoteColumns.PREVOUS_CLOSE, jsonObject.getString("PreviousClose"));
+            builder.withValue(QuoteColumns.PRICE_EPS_EST_CURR_YEAR, jsonObject.getString("PriceEPSEstimateCurrentYear"));
+            builder.withValue(QuoteColumns.PRICE_EPS_EST_NXT_YEAR, jsonObject.getString("PriceEPSEstimateNextYear"));
         } catch (JSONException e) {
             e.printStackTrace();
         }

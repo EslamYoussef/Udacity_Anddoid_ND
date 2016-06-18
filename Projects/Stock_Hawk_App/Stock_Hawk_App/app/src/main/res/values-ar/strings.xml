@@ -14,6 +14,11 @@
     <string name="no_data">لا يوجد بيانات</string>
     <string name="invalid_qoute_symbol">رمز سهم غير صحيح</string>
     <string name="content_descr_add_symbol">إضافة رمز سهم جديد</string>
-
+    <string name="days_range">متوسط الأيام</string>
+    <string name="year_range">متوسط السنة</string>
+    <string name="previous_closing">قيمة الإغلاق السابقة</string>
+    <string name="last_trade_date">تاريخ المعاملة الأخيرة</string>
+    <string name="price_eps_estimate_current_year">السعر التقريبي للسنة الحالية</string>
+    <string name="price_eps_estimate_next_year">السعر التقريبي للسنة القادمة</string>
 
 </resources>

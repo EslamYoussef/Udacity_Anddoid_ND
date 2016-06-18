@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.sam_chordas.android.stockhawk.R;
@@ -29,6 +30,7 @@ public class QuoteCursorAdapter extends CursorRecyclerViewAdapter<QuoteCursorAda
     private static Context mContext;
     private static Typeface robotoLight;
     private boolean isPercent;
+    private static int expandedPosition = -1;
 
     public QuoteCursorAdapter(Context context, Cursor cursor) {
         super(context, cursor);
@@ -41,6 +43,8 @@ public class QuoteCursorAdapter extends CursorRecyclerViewAdapter<QuoteCursorAda
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item_quote, parent, false);
         ViewHolder vh = new ViewHolder(itemView);
+        itemView.setTag(vh);
+
         return vh;
     }
 
@@ -48,6 +52,21 @@ public class QuoteCursorAdapter extends CursorRecyclerViewAdapter<QuoteCursorAda
     public void onBindViewHolder(final ViewHolder viewHolder, final Cursor cursor) {
         viewHolder.symbol.setText(cursor.getString(cursor.getColumnIndex("symbol")));
         viewHolder.bidPrice.setText(cursor.getString(cursor.getColumnIndex("bid_price")));
+        viewHolder.daysRange.setText(cursor.getString(cursor.getColumnIndex("DaysRange")));
+        viewHolder.yearRange.setText(cursor.getString(cursor.getColumnIndex("YearRange")));
+        viewHolder.previousClose.setText(cursor.getString(cursor.getColumnIndex("PreviousClose")));
+        viewHolder.lastTradeDate.setText(cursor.getString(cursor.getColumnIndex("LastTradeDate")));
+        viewHolder.priceEstimateCurrYear.setText(cursor.getString(cursor.getColumnIndex("PriceEPSEstimateCurrentYear")));
+        viewHolder.priceEstimateNXTYear.setText(cursor.getString(cursor.getColumnIndex("PriceEPSEstimateNextYear")));
+        //Details Views
+        int position = viewHolder.getAdapterPosition();
+        if (position == expandedPosition) {
+            viewHolder.rlStockDetails.setVisibility(View.VISIBLE);
+
+        } else {
+            viewHolder.rlStockDetails.setVisibility(View.GONE);
+        }
+
         int sdk = Build.VERSION.SDK_INT;
         if (cursor.getInt(cursor.getColumnIndex("is_up")) == 1) {
             if (sdk < Build.VERSION_CODES.JELLY_BEAN) {
@@ -91,11 +110,19 @@ public class QuoteCursorAdapter extends CursorRecyclerViewAdapter<QuoteCursorAda
         return super.getItemCount();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder
+    public class ViewHolder extends RecyclerView.ViewHolder
             implements ItemTouchHelperViewHolder, View.OnClickListener {
         public final TextView symbol;
         public final TextView bidPrice;
         public final TextView change;
+        //New added details
+        public final RelativeLayout rlStockDetails;
+        public final TextView daysRange;
+        public final TextView yearRange;
+        public final TextView previousClose;
+        public final TextView lastTradeDate;
+        public final TextView priceEstimateCurrYear;
+        public final TextView priceEstimateNXTYear;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -103,6 +130,15 @@ public class QuoteCursorAdapter extends CursorRecyclerViewAdapter<QuoteCursorAda
             symbol.setTypeface(robotoLight);
             bidPrice = (TextView) itemView.findViewById(R.id.bid_price);
             change = (TextView) itemView.findViewById(R.id.change);
+            daysRange = (TextView) itemView.findViewById(R.id.daysRange);
+            yearRange = (TextView) itemView.findViewById(R.id.yearRange);
+            previousClose = (TextView) itemView.findViewById(R.id.previousClose);
+            lastTradeDate = (TextView) itemView.findViewById(R.id.lastTrade);
+            priceEstimateCurrYear = (TextView) itemView.findViewById(R.id.priceEstimateCurrYear);
+            priceEstimateNXTYear = (TextView) itemView.findViewById(R.id.priceEstimateNXTYear);
+            rlStockDetails = (RelativeLayout) itemView.findViewById(R.id.rlStockDetails);
+            itemView.setOnClickListener(this);
+
         }
 
         @Override
@@ -115,9 +151,18 @@ public class QuoteCursorAdapter extends CursorRecyclerViewAdapter<QuoteCursorAda
             itemView.setBackgroundColor(0);
         }
 
+
         @Override
         public void onClick(View v) {
-
+            ViewHolder holder = (ViewHolder) v.getTag();
+            // Check for an expanded view, collapse if you find one
+            if (expandedPosition >= 0) {
+                int prev = expandedPosition;
+                notifyItemChanged(prev);
+            }
+            // Set the current position to "expanded"
+            expandedPosition = holder.getAdapterPosition();
+            notifyItemChanged(expandedPosition);
         }
     }
 }

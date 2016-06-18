@@ -43,9 +43,6 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
 
-    /**
-     * Used to store the last screen title. For use in {@link #restoreActionBar()}.
-     */
     private CharSequence mTitle;
     private Intent mServiceIntent;
     private ItemTouchHelper mItemTouchHelper;
@@ -77,18 +74,19 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
         //Initially sets it with "No Data" String
         tvEmptyView.setText(R.string.no_data);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         getLoaderManager().initLoader(CURSOR_LOADER_ID, null, this);
 
         mCursorAdapter = new QuoteCursorAdapter(this, null);
-        recyclerView.addOnItemTouchListener(new RecyclerViewItemClickListener(this,
-                new RecyclerViewItemClickListener.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View v, int position) {
-                        //TODO:
-                        // do something on item click
-                    }
-                }));
+//        recyclerView.addOnItemTouchListener(new RecyclerViewItemClickListener(this,
+//                new RecyclerViewItemClickListener.OnItemClickListener() {
+//                    @Override
+//                    public void onItemClick(View v, int position) {
+//                        //TODO:
+//                        // do something on item click
+//                    }
+//                }));
         recyclerView.setAdapter(mCursorAdapter);
 
 
@@ -169,34 +167,11 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
         Toast.makeText(mContext, getString(R.string.network_toast), Toast.LENGTH_SHORT).show();
     }
 
-    public void restoreActionBar() {
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setTitle(mTitle);
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.my_stocks, menu);
-        final MenuItem item = menu.add(R.string.action_change_units);
-        Button buttonView = new Button(this, null, android.R.attr.actionButtonStyle);
-        if (Build.VERSION.SDK_INT < 23) {
-            buttonView.setTextAppearance(this, android.R.style.TextAppearance_DeviceDefault_Widget_ActionBar_Menu);
-        } else {
-            buttonView.setTextAppearance(android.R.style.TextAppearance_DeviceDefault_Widget_ActionBar_Menu);
-        }
-        buttonView.setText(R.string.action_change_units); // button label
-        buttonView.setContentDescription("Content description");
-        buttonView.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View view) {
-                MyStocksActivity.this.onOptionsItemSelected(item);
-            }
-        });
-        item.setActionView(buttonView);
-        restoreActionBar();
         return true;
     }
 
@@ -226,7 +201,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
         // This narrows the return to only the stocks that are most current.
         return new CursorLoader(this, QuoteProvider.Quotes.CONTENT_URI,
                 new String[]{QuoteColumns._ID, QuoteColumns.SYMBOL, QuoteColumns.BIDPRICE,
-                        QuoteColumns.PERCENT_CHANGE, QuoteColumns.CHANGE, QuoteColumns.ISUP},
+                        QuoteColumns.PERCENT_CHANGE, QuoteColumns.CHANGE, QuoteColumns.ISUP, QuoteColumns.DAYS_RANGE, QuoteColumns.YEAR_RANGE, QuoteColumns.PREVOUS_CLOSE, QuoteColumns.LAST_TRADE_Date, QuoteColumns.PRICE_EPS_EST_CURR_YEAR, QuoteColumns.PRICE_EPS_EST_NXT_YEAR},
                 QuoteColumns.ISCURRENT + " = ?",
                 new String[]{"1"},
                 null);

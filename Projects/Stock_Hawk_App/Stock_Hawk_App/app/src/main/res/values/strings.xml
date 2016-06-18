@@ -14,6 +14,12 @@
     <string name="no_data">No Data Available</string>
     <string name="invalid_qoute_symbol">Invalid Stock Symbol</string>
     <string name="content_descr_add_symbol">Adding new Stock Symbol</string>
+    <string name="days_range">Days range</string>
+    <string name="year_range">Year range</string>
+    <string name="previous_closing">Previous close value</string>
+    <string name="last_trade_date">Last trade date</string>
+    <string name="price_eps_estimate_current_year">Price EPS Estimate Current Year</string>
+    <string name="price_eps_estimate_next_year">Price EPS Estimate Next Year</string>
 
 
 </resources>
