@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Stock Hawk</string>
+
+    <string name="action_example">مثال تصرف</string>
+
+    <string name="action_settings">الضبط</string>
+    <string name="action_change_units">تغيير الوحدات</string>
+    <string name="symbol_search">بحث عن رمز</string>
+    <string name="content_test">بحث عن رمز السهم</string>
+    <string name="input_hint">FB</string>
+    <string name="input_prefill"></string>
+    <string name="network_toast">يحتاج هذا التطبيق للإتصال بالإنترنت</string>
+    <string name="no_network">لا يوجد اتصال بالإنترنت, لتحميل الأسهم</string>
+    <string name="no_data">لا يوجد بيانات</string>
+    <string name="invalid_qoute_symbol">رمز سهم غير صحيح</string>
+    <string name="content_descr_add_symbol">إضافة رمز سهم جديد</string>
+
+
+</resources>

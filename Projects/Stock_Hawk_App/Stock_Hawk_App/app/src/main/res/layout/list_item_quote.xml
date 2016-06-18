@@ -13,6 +13,7 @@
         style="@style/StockSymbolTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
         android:gravity="left|center_vertical|start"
         tools:text="GOOG" />
 
@@ -20,7 +21,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-
         android:gravity="right|end">
 
         <TextView
@@ -29,6 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="left|start"
+
             android:paddingRight="10sp"
             tools:text="1000.00" />
 
@@ -38,6 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/percent_change_pill"
+
             android:gravity="right|end"
             android:paddingLeft="3dp"
             android:paddingRight="3dp"

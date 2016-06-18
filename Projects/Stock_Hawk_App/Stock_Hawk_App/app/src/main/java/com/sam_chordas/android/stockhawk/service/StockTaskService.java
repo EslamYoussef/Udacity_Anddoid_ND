@@ -135,8 +135,8 @@ public class StockTaskService extends GcmTaskService {
                                 null, null);
                     }
                     ArrayList<ContentProviderOperation> batchOperations = Utils.quoteJsonToContentVals(getResponse);
-                    //Check that the newest loaded symbol is valid "the last one in the list"
-                    if (null != batchOperations && batchOperations.size() > 0&&null!=batchOperations.get(batchOperations.size()-1))
+                    //Check that the newest loaded symbol is valid
+                    if (null != batchOperations && batchOperations.size() > 0 && null != batchOperations.get(0))
                         mContext.getContentResolver().applyBatch(QuoteProvider.AUTHORITY,
                                 batchOperations);
                     else {
@@ -149,7 +149,7 @@ public class StockTaskService extends GcmTaskService {
                                 Toast.makeText(mContext, R.string.invalid_qoute_symbol, Toast.LENGTH_LONG).show();
                             }
                         });
-                        Log.e(LOG_TAG,  "Invalid_qoute_symbol");
+                        Log.e(LOG_TAG, "Invalid_qoute_symbol");
                     }
                 } catch (RemoteException | OperationApplicationException e) {
                     Log.e("Symbol", "Error applying batch insert", e);

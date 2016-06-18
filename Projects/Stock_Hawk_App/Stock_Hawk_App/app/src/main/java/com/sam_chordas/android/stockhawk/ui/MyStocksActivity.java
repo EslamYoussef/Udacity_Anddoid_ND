@@ -6,6 +6,7 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -177,6 +179,23 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.my_stocks, menu);
+        final MenuItem item = menu.add(R.string.action_change_units);
+        Button buttonView = new Button(this, null, android.R.attr.actionButtonStyle);
+        if (Build.VERSION.SDK_INT < 23) {
+            buttonView.setTextAppearance(this, android.R.style.TextAppearance_DeviceDefault_Widget_ActionBar_Menu);
+        } else {
+            buttonView.setTextAppearance(android.R.style.TextAppearance_DeviceDefault_Widget_ActionBar_Menu);
+        }
+        buttonView.setText(R.string.action_change_units); // button label
+        buttonView.setContentDescription("Content description");
+        buttonView.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                MyStocksActivity.this.onOptionsItemSelected(item);
+            }
+        });
+        item.setActionView(buttonView);
         restoreActionBar();
         return true;
     }
