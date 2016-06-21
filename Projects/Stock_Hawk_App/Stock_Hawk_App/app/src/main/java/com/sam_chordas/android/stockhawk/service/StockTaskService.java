@@ -140,7 +140,7 @@ public class StockTaskService extends GcmTaskService {
                         mContext.getContentResolver().applyBatch(QuoteProvider.AUTHORITY,
                                 batchOperations);
                     else {
-                        // Show Toast indicating that the entered Symbol is invalid symbol
+                        // Show Toast indicating that the entered1 Symbol is invalid symbol
                         Handler h = new Handler(mContext.getMainLooper());
 
                         h.post(new Runnable() {
