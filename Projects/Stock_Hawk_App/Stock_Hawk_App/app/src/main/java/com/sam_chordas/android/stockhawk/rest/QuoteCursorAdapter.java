@@ -30,7 +30,11 @@ public class QuoteCursorAdapter extends CursorRecyclerViewAdapter<QuoteCursorAda
     private static Context mContext;
     private static Typeface robotoLight;
     private boolean isPercent;
-    private static int expandedPosition = -1;
+    private static int mExpandedPosition = 0;
+
+    public void setExpandedPosition(int expandedPosition) {
+        mExpandedPosition = expandedPosition;
+    }
 
     public QuoteCursorAdapter(Context context, Cursor cursor) {
         super(context, cursor);
@@ -58,9 +62,14 @@ public class QuoteCursorAdapter extends CursorRecyclerViewAdapter<QuoteCursorAda
         viewHolder.lastTradeDate.setText(cursor.getString(cursor.getColumnIndex("LastTradeDate")));
         viewHolder.priceEstimateCurrYear.setText(cursor.getString(cursor.getColumnIndex("PriceEPSEstimateCurrentYear")));
         viewHolder.priceEstimateNXTYear.setText(cursor.getString(cursor.getColumnIndex("PriceEPSEstimateNextYear")));
+        viewHolder.priceChangeTwoHundredDays.setText(cursor.getString(cursor.getColumnIndex("ChangeFromTwoHundreddayMovingAverage")));
+        viewHolder.percentChangeTwoHundredDays.setText(cursor.getString(cursor.getColumnIndex("PercentChangeFromTwoHundreddayMovingAverage")));
+        viewHolder.priceChangeFiftyDays.setText(cursor.getString(cursor.getColumnIndex("ChangeFromFiftydayMovingAverage")));
+        viewHolder.percentChangeFiftyDays.setText(cursor.getString(cursor.getColumnIndex("PercentChangeFromFiftydayMovingAverage")));
+
         //Details Views
         int position = viewHolder.getAdapterPosition();
-        if (position == expandedPosition) {
+        if (position == mExpandedPosition) {
             viewHolder.rlStockDetails.setVisibility(View.VISIBLE);
 
         } else {
@@ -85,6 +94,48 @@ public class QuoteCursorAdapter extends CursorRecyclerViewAdapter<QuoteCursorAda
             } else {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     viewHolder.change.setBackground(
+                            mContext.getResources().getDrawable(R.drawable.percent_change_pill_red));
+                }
+            }
+        }
+        if (cursor.getString(cursor.getColumnIndex("PercentChangeFromTwoHundreddayMovingAverage")).startsWith("+")) {
+            if (sdk < Build.VERSION_CODES.JELLY_BEAN) {
+                viewHolder.percentChangeTwoHundredDays.setBackgroundDrawable(
+                        mContext.getResources().getDrawable(R.drawable.percent_change_pill_green));
+            } else {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    viewHolder.percentChangeTwoHundredDays.setBackground(
+                            mContext.getResources().getDrawable(R.drawable.percent_change_pill_green));
+                }
+            }
+        } else {
+            if (sdk < Build.VERSION_CODES.JELLY_BEAN) {
+                viewHolder.percentChangeTwoHundredDays.setBackgroundDrawable(
+                        mContext.getResources().getDrawable(R.drawable.percent_change_pill_red));
+            } else {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    viewHolder.percentChangeTwoHundredDays.setBackground(
+                            mContext.getResources().getDrawable(R.drawable.percent_change_pill_red));
+                }
+            }
+        }
+        if (cursor.getString(cursor.getColumnIndex("PercentChangeFromFiftydayMovingAverage")).startsWith("+")) {
+            if (sdk < Build.VERSION_CODES.JELLY_BEAN) {
+                viewHolder.percentChangeFiftyDays.setBackgroundDrawable(
+                        mContext.getResources().getDrawable(R.drawable.percent_change_pill_green));
+            } else {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    viewHolder.percentChangeFiftyDays.setBackground(
+                            mContext.getResources().getDrawable(R.drawable.percent_change_pill_green));
+                }
+            }
+        } else {
+            if (sdk < Build.VERSION_CODES.JELLY_BEAN) {
+                viewHolder.percentChangeFiftyDays.setBackgroundDrawable(
+                        mContext.getResources().getDrawable(R.drawable.percent_change_pill_red));
+            } else {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    viewHolder.percentChangeFiftyDays.setBackground(
                             mContext.getResources().getDrawable(R.drawable.percent_change_pill_red));
                 }
             }
@@ -123,6 +174,10 @@ public class QuoteCursorAdapter extends CursorRecyclerViewAdapter<QuoteCursorAda
         public final TextView lastTradeDate;
         public final TextView priceEstimateCurrYear;
         public final TextView priceEstimateNXTYear;
+        public final TextView priceChangeTwoHundredDays;
+        public final TextView percentChangeTwoHundredDays;
+        public final TextView priceChangeFiftyDays;
+        public final TextView percentChangeFiftyDays;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -136,6 +191,10 @@ public class QuoteCursorAdapter extends CursorRecyclerViewAdapter<QuoteCursorAda
             lastTradeDate = (TextView) itemView.findViewById(R.id.lastTrade);
             priceEstimateCurrYear = (TextView) itemView.findViewById(R.id.priceEstimateCurrYear);
             priceEstimateNXTYear = (TextView) itemView.findViewById(R.id.priceEstimateNXTYear);
+            priceChangeTwoHundredDays = (TextView) itemView.findViewById(R.id.changeTwoHundred);
+            percentChangeTwoHundredDays = (TextView) itemView.findViewById(R.id.changeTwoHundredPerc);
+            priceChangeFiftyDays = (TextView) itemView.findViewById(R.id.changeFifty);
+            percentChangeFiftyDays = (TextView) itemView.findViewById(R.id.changeFiftyPerc);
             rlStockDetails = (RelativeLayout) itemView.findViewById(R.id.rlStockDetails);
             itemView.setOnClickListener(this);
 
@@ -156,13 +215,13 @@ public class QuoteCursorAdapter extends CursorRecyclerViewAdapter<QuoteCursorAda
         public void onClick(View v) {
             ViewHolder holder = (ViewHolder) v.getTag();
             // Check for an expanded view, collapse if you find one
-            if (expandedPosition >= 0) {
-                int prev = expandedPosition;
+            if (mExpandedPosition >= 0) {
+                int prev = mExpandedPosition;
                 notifyItemChanged(prev);
             }
             // Set the current position to "expanded"
-            expandedPosition = holder.getAdapterPosition();
-            notifyItemChanged(expandedPosition);
+            mExpandedPosition = holder.getAdapterPosition();
+            notifyItemChanged(mExpandedPosition);
         }
     }
 }

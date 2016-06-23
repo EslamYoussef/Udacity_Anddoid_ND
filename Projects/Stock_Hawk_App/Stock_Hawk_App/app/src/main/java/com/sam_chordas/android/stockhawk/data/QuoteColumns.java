@@ -51,4 +51,17 @@ public class QuoteColumns {
     @DataType(DataType.Type.TEXT)
     @NotNull
     public static final String PRICE_EPS_EST_NXT_YEAR = "PriceEPSEstimateNextYear";
+    @DataType(DataType.Type.TEXT)
+    @NotNull
+    public static final String AVG_CHANGE_FROM_TWO_HUNDRED_DAYS = "ChangeFromTwoHundreddayMovingAverage";
+    @DataType(DataType.Type.TEXT)
+    @NotNull
+    public static final String PERC_CHANGE_FROM_TWO_HUNDRED_DAYS = "PercentChangeFromTwoHundreddayMovingAverage";
+    @DataType(DataType.Type.TEXT)
+    @NotNull
+    public static final String AVG_CHANGE_FROM_FIFTY_DAYS = "ChangeFromFiftydayMovingAverage";
+    @DataType(DataType.Type.TEXT)
+    @NotNull
+    public static final String PERC_CHANGE_FROM_FIFTY_DAYS = "PercentChangeFromFiftydayMovingAverage";
+
 }

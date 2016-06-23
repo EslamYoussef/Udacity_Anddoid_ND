@@ -20,5 +20,6 @@
     <string name="last_trade_date">تاريخ المعاملة الأخيرة</string>
     <string name="price_eps_estimate_current_year">السعر التقريبي للسنة الحالية</string>
     <string name="price_eps_estimate_next_year">السعر التقريبي للسنة القادمة</string>
-
+    <string name="change_from_2h_days">متوسط تغير السعر خلال ال200  يوم السابقة</string>
+    <string name="change_from_50_days">متوسط تغير السعر خلال ال 50 يوم السابقة</string>
 </resources>

@@ -39,7 +39,6 @@
             </intent-filter>
         </service>
         <service android:name="com.sam_chordas.android.stockhawk.service.StockIntentService" />
-        <service android:name=".widget.WidgetIntentService" />
 
         <provider
             android:name="com.sam_chordas.android.stockhawk.data.generated.QuoteProvider"
@@ -50,6 +49,7 @@
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.sam_chordas.android.stockhawk.app.ACTION_DATA_UPDATED" />
             </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"

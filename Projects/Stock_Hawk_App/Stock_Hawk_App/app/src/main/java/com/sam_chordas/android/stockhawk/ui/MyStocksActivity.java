@@ -52,6 +52,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
     private Cursor mCursor;
     private TextView tvEmptyView;
     private RecyclerView recyclerView;
+    private int mExpandedPosition = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,8 +78,14 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         getLoaderManager().initLoader(CURSOR_LOADER_ID, null, this);
-
+//Get Expanded position, in case of selected position in Widget
+        if (null != getIntent() && null != getIntent().getExtras()) {
+            if (getIntent().getExtras().containsKey("selected_position")) {
+                mExpandedPosition = getIntent().getExtras().getInt("selected_position");
+            }
+        }
         mCursorAdapter = new QuoteCursorAdapter(this, null);
+        mCursorAdapter.setExpandedPosition(mExpandedPosition);
         recyclerView.setAdapter(mCursorAdapter);
 
 
@@ -193,7 +200,8 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
         // This narrows the return to only the stocks that are most current.
         return new CursorLoader(this, QuoteProvider.Quotes.CONTENT_URI,
                 new String[]{QuoteColumns._ID, QuoteColumns.SYMBOL, QuoteColumns.BIDPRICE,
-                        QuoteColumns.PERCENT_CHANGE, QuoteColumns.CHANGE, QuoteColumns.ISUP, QuoteColumns.DAYS_RANGE, QuoteColumns.YEAR_RANGE, QuoteColumns.PREVOUS_CLOSE, QuoteColumns.LAST_TRADE_Date, QuoteColumns.PRICE_EPS_EST_CURR_YEAR, QuoteColumns.PRICE_EPS_EST_NXT_YEAR},
+                        QuoteColumns.PERCENT_CHANGE, QuoteColumns.CHANGE, QuoteColumns.ISUP, QuoteColumns.DAYS_RANGE, QuoteColumns.YEAR_RANGE, QuoteColumns.PREVOUS_CLOSE, QuoteColumns.LAST_TRADE_Date, QuoteColumns.PRICE_EPS_EST_CURR_YEAR, QuoteColumns.PRICE_EPS_EST_NXT_YEAR,
+                        QuoteColumns.AVG_CHANGE_FROM_TWO_HUNDRED_DAYS, QuoteColumns.PERC_CHANGE_FROM_TWO_HUNDRED_DAYS, QuoteColumns.AVG_CHANGE_FROM_FIFTY_DAYS, QuoteColumns.PERC_CHANGE_FROM_FIFTY_DAYS},
                 QuoteColumns.ISCURRENT + " = ?",
                 new String[]{"1"},
                 null);

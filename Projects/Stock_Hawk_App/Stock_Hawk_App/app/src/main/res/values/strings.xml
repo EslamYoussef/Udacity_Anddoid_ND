@@ -20,6 +20,8 @@
     <string name="last_trade_date">Last trade date</string>
     <string name="price_eps_estimate_current_year">Price EPS Estimate Current Year</string>
     <string name="price_eps_estimate_next_year">Price EPS Estimate Next Year</string>
+    <string name="change_from_2h_days">Average change from 200 days</string>
+    <string name="change_from_50_days">Average change from 50 days</string>
 
 
 </resources>

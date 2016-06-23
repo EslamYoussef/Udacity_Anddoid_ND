@@ -1,12 +1,9 @@
 package com.sam_chordas.android.stockhawk.widget;
 
-
 import android.content.Intent;
-import android.content.Loader;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Binder;
-import android.util.Log;
+import android.widget.AdapterView;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
@@ -23,17 +20,16 @@ public class WidgetRemoteService extends RemoteViewsService {
     private static final String[] STOCK_HAWK_COLUMNS = {
             QuoteColumns._ID, QuoteColumns.SYMBOL, QuoteColumns.BIDPRICE,
             QuoteColumns.PERCENT_CHANGE,
-            QuoteColumns.CHANGE, QuoteColumns.ISUP, QuoteColumns.DAYS_RANGE, QuoteColumns.YEAR_RANGE, QuoteColumns.PREVOUS_CLOSE, QuoteColumns.LAST_TRADE_Date, QuoteColumns.PRICE_EPS_EST_CURR_YEAR, QuoteColumns.PRICE_EPS_EST_NXT_YEAR};
+            QuoteColumns.CHANGE, QuoteColumns.ISUP};
     // these indices must match the projection
     static final int INDEX_ID = 0;
     static final int INDEX_SUMBOL = 1;
     static final int INDEX_BIDPRICE = 2;
-    static final int INDEX_PERCENT_CHANGE = 3;
     static final int INDEX_CHANGE = 4;
     static final int INDEX_ISUP = 5;
 
     @Override
-    public RemoteViewsFactory onGetViewFactory(Intent intent) {
+    public RemoteViewsFactory onGetViewFactory(final Intent intent) {
 
         return new RemoteViewsFactory() {
             private Cursor data = null;
@@ -42,7 +38,6 @@ public class WidgetRemoteService extends RemoteViewsService {
             public void onCreate() {
 
             }
-
 
             @Override
             public void onDataSetChanged() {
@@ -61,14 +56,7 @@ public class WidgetRemoteService extends RemoteViewsService {
                         QuoteColumns.ISCURRENT + " = ?",
                         new String[]{"1"},
                         null);
-                Log.d("Cursor Count", String.valueOf(data.getCount()));
-                data.moveToFirst();
-                String symbols = "";
-                do {
-                    symbols += data.getString(INDEX_SUMBOL);
-                }
-                while (data.moveToNext());
-                Log.d("Symbols =", symbols);
+
                 Binder.restoreCallingIdentity(identityToken);
             }
 
@@ -87,7 +75,30 @@ public class WidgetRemoteService extends RemoteViewsService {
 
             @Override
             public RemoteViews getViewAt(int position) {
-                return new RemoteViews(getPackageName(), R.id.lvStockHawks);
+                if (position == AdapterView.INVALID_POSITION ||
+                        data == null || !data.moveToPosition(position)) {
+                    return null;
+                }
+                RemoteViews views = new RemoteViews(getPackageName(),
+                        R.layout.widget_list_item_quote);
+                //Extract quote data frm the cursor
+                String symbol = data.getString(INDEX_SUMBOL);
+                String bidPrice = data.getString(INDEX_BIDPRICE);
+                Integer isUp = data.getInt(INDEX_ISUP);
+                String change = data.getString(INDEX_CHANGE);
+                //Assign data to the views
+                views.setTextViewText(R.id.stock_symbol, symbol);
+                views.setTextViewText(R.id.bid_price, bidPrice);
+                views.setTextViewText(R.id.change, change);
+                if (isUp == 1)
+                    views.setInt(R.id.change, "setBackgroundColor", getResources().getColor(android.R.color.holo_green_dark));
+                else
+                    views.setInt(R.id.change, "setBackgroundColor", getResources().getColor(android.R.color.holo_red_dark));
+//                final Intent fillInIntent = new Intent(WidgetRemoteService.this, MyStocksActivity.class);
+                final Intent fillInIntent = new Intent();
+                fillInIntent.putExtra("selected_position", position);
+                views.setOnClickFillInIntent(R.id.list_item_quote_container, fillInIntent);
+                return views;
             }
 
             @Override

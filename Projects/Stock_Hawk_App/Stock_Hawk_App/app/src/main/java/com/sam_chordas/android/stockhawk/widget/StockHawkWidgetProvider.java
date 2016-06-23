@@ -27,11 +27,10 @@ public class StockHawkWidgetProvider extends AppWidgetProvider {
         if (Utils.isConnected(context)) {
             for (int appWidgetId : appWidgetIds) {
                 RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
-
                 // Create an Intent to launch MainActivity
                 Intent intent = new Intent(context, MyStocksActivity.class);
-                PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
-                views.setOnClickPendingIntent(R.id.widget, pendingIntent);
+                PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                views.setPendingIntentTemplate(R.id.lvStockHawks, pendingIntent);
 
                 // Set up the collection
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
@@ -40,14 +39,6 @@ public class StockHawkWidgetProvider extends AppWidgetProvider {
                 } else {
                     setRemoteAdapterV11(context, views);
                 }
-                boolean useDetailActivity = true;
-                Intent clickIntentTemplate = useDetailActivity
-                        ? new Intent(context, MyStocksActivity.class)
-                        : new Intent(context, MyStocksActivity.class);
-                PendingIntent clickPendingIntentTemplate = TaskStackBuilder.create(context)
-                        .addNextIntentWithParentStack(clickIntentTemplate)
-                        .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-                views.setPendingIntentTemplate(R.id.lvStockHawks, clickPendingIntentTemplate);
                 views.setEmptyView(R.id.lvStockHawks, R.id.empty_view);
 
                 // Tell the AppWidgetManager to perform an update on the current app widget
@@ -58,16 +49,15 @@ public class StockHawkWidgetProvider extends AppWidgetProvider {
         }
     }
 
-//    @Override
-//    public void onReceive(@NonNull Context context, @NonNull Intent intent) {
-//        super.onReceive(context, intent);
-//
-//        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-//        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(
-//                new ComponentName(context, getClass()));
-//        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.lvStockHawks);
-//
-//    }
+    @Override
+    public void onReceive(@NonNull Context context, @NonNull Intent intent) {
+        super.onReceive(context, intent);
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(
+                new ComponentName(context, getClass()));
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.lvStockHawks);
+
+    }
 
     /**
      * Sets the remote adapter used to fill in the list items

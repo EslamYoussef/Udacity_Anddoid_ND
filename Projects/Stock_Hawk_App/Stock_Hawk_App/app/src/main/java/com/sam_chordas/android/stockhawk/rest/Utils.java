@@ -64,6 +64,41 @@ public class Utils {
         return bidPrice;
     }
 
+    public static String truncateDate(String dateStr, String delim) {
+        String[] splittedStr = null;
+        String truncatedString = "";
+        if (null != dateStr && !dateStr.equals("null"))
+            splittedStr = dateStr.split(delim);
+        for (int i = 0; i < splittedStr.length; i++) {
+            truncatedString += truncateInt(splittedStr[i]);
+            if (i < splittedStr.length - 1)
+                truncatedString += delim;
+        }
+
+        return truncatedString;
+    }
+
+    public static String truncateInt(String intStr) {
+        if (null != intStr && !intStr.equals("null"))
+            intStr = String.format("%d", Integer.parseInt(intStr));
+        return intStr;
+    }
+
+    public static String truncateDelimString(String delimStr, String delim) {
+        String[] splittedStr = null;
+        String truncatedString = "";
+        if (null != delimStr && !delimStr.equals("null"))
+            splittedStr = delimStr.split(delim);
+        for (int i = 0; i < splittedStr.length; i++) {
+            truncatedString += truncateBidPrice(splittedStr[i]);
+            if (i < splittedStr.length - 1)
+            truncatedString += delim;
+        }
+
+        return truncatedString;
+    }
+
+
     public static String truncateChange(String change, boolean isPercentChange) {
         if (null != change && !change.equals("null")) {
             String weight = change.substring(0, 1);
@@ -101,12 +136,17 @@ public class Utils {
             } else {
                 builder.withValue(QuoteColumns.ISUP, 1);
             }
-            builder.withValue(QuoteColumns.DAYS_RANGE, jsonObject.getString("DaysRange"));
-            builder.withValue(QuoteColumns.LAST_TRADE_Date, jsonObject.getString("LastTradeDate"));
-            builder.withValue(QuoteColumns.YEAR_RANGE, jsonObject.getString("YearRange"));
-            builder.withValue(QuoteColumns.PREVOUS_CLOSE, jsonObject.getString("PreviousClose"));
-            builder.withValue(QuoteColumns.PRICE_EPS_EST_CURR_YEAR, jsonObject.getString("PriceEPSEstimateCurrentYear"));
-            builder.withValue(QuoteColumns.PRICE_EPS_EST_NXT_YEAR, jsonObject.getString("PriceEPSEstimateNextYear"));
+
+            builder.withValue(QuoteColumns.DAYS_RANGE, truncateDelimString(jsonObject.getString("DaysRange"), "-"));
+            builder.withValue(QuoteColumns.LAST_TRADE_Date, truncateDate(jsonObject.getString("LastTradeDate"), "/"));
+            builder.withValue(QuoteColumns.YEAR_RANGE, truncateDelimString(jsonObject.getString("YearRange"), "-"));
+            builder.withValue(QuoteColumns.PREVOUS_CLOSE, truncateBidPrice(jsonObject.getString("PreviousClose")));
+            builder.withValue(QuoteColumns.PRICE_EPS_EST_CURR_YEAR, truncateBidPrice(jsonObject.getString("PriceEPSEstimateCurrentYear")));
+            builder.withValue(QuoteColumns.PRICE_EPS_EST_NXT_YEAR, truncateBidPrice(jsonObject.getString("PriceEPSEstimateNextYear")));
+            builder.withValue(QuoteColumns.AVG_CHANGE_FROM_TWO_HUNDRED_DAYS, truncateBidPrice(jsonObject.getString("ChangeFromTwoHundreddayMovingAverage")));
+            builder.withValue(QuoteColumns.PERC_CHANGE_FROM_TWO_HUNDRED_DAYS, truncateChange(jsonObject.getString("PercentChangeFromTwoHundreddayMovingAverage"), true));
+            builder.withValue(QuoteColumns.AVG_CHANGE_FROM_FIFTY_DAYS, truncateBidPrice(jsonObject.getString("ChangeFromFiftydayMovingAverage")));
+            builder.withValue(QuoteColumns.PERC_CHANGE_FROM_FIFTY_DAYS, truncateChange(jsonObject.getString("PercentChangeFromFiftydayMovingAverage"), true));
         } catch (JSONException e) {
             e.printStackTrace();
         }
