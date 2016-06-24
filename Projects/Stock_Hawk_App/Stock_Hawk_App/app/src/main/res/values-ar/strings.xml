@@ -4,6 +4,7 @@
     <string name="action_example">مثال تصرف</string>
 
     <string name="action_settings">الضبط</string>
+    <string name="stock_already_saved">هذا المؤشر تم تسجيله من قبل!</string>
     <string name="action_change_units">تغيير الوحدات</string>
     <string name="symbol_search">بحث عن رمز</string>
     <string name="content_test">بحث عن رمز السهم</string>

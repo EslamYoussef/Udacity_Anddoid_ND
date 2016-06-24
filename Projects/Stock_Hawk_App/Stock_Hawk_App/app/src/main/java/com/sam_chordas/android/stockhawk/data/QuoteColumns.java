@@ -21,10 +21,10 @@ public class QuoteColumns {
     public static final String PERCENT_CHANGE = "percent_change";
     @DataType(DataType.Type.TEXT)
     @NotNull
-    public static final String CHANGE = "change";
+    public static final String CHANGE = "Change";
     @DataType(DataType.Type.TEXT)
     @NotNull
-    public static final String BIDPRICE = "bid_price";
+    public static final String BIDPRICE = "Bid_price";
     @DataType(DataType.Type.TEXT)
     public static final String CREATED = "created";
     @DataType(DataType.Type.INTEGER)

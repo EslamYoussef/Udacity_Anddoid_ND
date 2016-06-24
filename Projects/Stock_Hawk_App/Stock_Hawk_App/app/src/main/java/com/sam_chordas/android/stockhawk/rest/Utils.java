@@ -4,7 +4,6 @@ import android.content.ContentProviderOperation;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.util.Log;
 
 import com.sam_chordas.android.stockhawk.data.QuoteColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteProvider;
@@ -31,17 +30,16 @@ public class Utils {
         try {
             jsonObject = new JSONObject(JSON);
             if (jsonObject != null && jsonObject.length() != 0) {
-                jsonObject = jsonObject.getJSONObject("query");
-                int count = Integer.parseInt(jsonObject.getString("count"));
+                jsonObject = jsonObject.getJSONObject(Keys.QUERY);
+                int count = Integer.parseInt(jsonObject.getString(Keys.COUNT));
                 if (count == 1) {
-                    jsonObject = jsonObject.getJSONObject("results")
-                            .getJSONObject("quote");
+                    jsonObject = jsonObject.getJSONObject(Keys.RESULTS)
+                            .getJSONObject(Keys.QUOTE);
 
-//                    batchOperations.add(buildBatchOperation(jsonObject));
                     ContentProviderOperation buildBatchOperation = buildBatchOperation(jsonObject);
                     batchOperations.add(buildBatchOperation);
                 } else {
-                    resultsArray = jsonObject.getJSONObject("results").getJSONArray("quote");
+                    resultsArray = jsonObject.getJSONObject(Keys.RESULTS).getJSONArray(Keys.QUOTE);
 
                     if (resultsArray != null && resultsArray.length() != 0) {
                         for (int i = 0; i < resultsArray.length(); i++) {
@@ -53,7 +51,7 @@ public class Utils {
                 }
             }
         } catch (JSONException e) {
-            Log.e(LOG_TAG, "String to JSON failed: " + e);
+            e.printStackTrace();
         }
         return batchOperations;
     }
@@ -92,7 +90,7 @@ public class Utils {
         for (int i = 0; i < splittedStr.length; i++) {
             truncatedString += truncateBidPrice(splittedStr[i]);
             if (i < splittedStr.length - 1)
-            truncatedString += delim;
+                truncatedString += delim;
         }
 
         return truncatedString;
@@ -122,13 +120,13 @@ public class Utils {
         ContentProviderOperation.Builder builder = ContentProviderOperation.newInsert(
                 QuoteProvider.Quotes.CONTENT_URI);
         try {
-            String change = jsonObject.getString("Change");
+            String change = jsonObject.getString(QuoteColumns.CHANGE);
             if ("null".equals(change))
                 return null;
-            builder.withValue(QuoteColumns.SYMBOL, jsonObject.getString("symbol"));
-            builder.withValue(QuoteColumns.BIDPRICE, truncateBidPrice(jsonObject.getString("Bid")));
+            builder.withValue(QuoteColumns.SYMBOL, jsonObject.getString(QuoteColumns.SYMBOL));
+            builder.withValue(QuoteColumns.BIDPRICE, truncateBidPrice(jsonObject.getString(Keys.BID)));
             builder.withValue(QuoteColumns.PERCENT_CHANGE, truncateChange(
-                    jsonObject.getString("ChangeinPercent"), true));
+                    jsonObject.getString(Keys.CHANGING_PERCENT), true));
             builder.withValue(QuoteColumns.CHANGE, truncateChange(change, false));
             builder.withValue(QuoteColumns.ISCURRENT, 1);
             if (change.charAt(0) == '-') {
@@ -137,16 +135,16 @@ public class Utils {
                 builder.withValue(QuoteColumns.ISUP, 1);
             }
 
-            builder.withValue(QuoteColumns.DAYS_RANGE, truncateDelimString(jsonObject.getString("DaysRange"), "-"));
-            builder.withValue(QuoteColumns.LAST_TRADE_Date, truncateDate(jsonObject.getString("LastTradeDate"), "/"));
-            builder.withValue(QuoteColumns.YEAR_RANGE, truncateDelimString(jsonObject.getString("YearRange"), "-"));
-            builder.withValue(QuoteColumns.PREVOUS_CLOSE, truncateBidPrice(jsonObject.getString("PreviousClose")));
-            builder.withValue(QuoteColumns.PRICE_EPS_EST_CURR_YEAR, truncateBidPrice(jsonObject.getString("PriceEPSEstimateCurrentYear")));
-            builder.withValue(QuoteColumns.PRICE_EPS_EST_NXT_YEAR, truncateBidPrice(jsonObject.getString("PriceEPSEstimateNextYear")));
-            builder.withValue(QuoteColumns.AVG_CHANGE_FROM_TWO_HUNDRED_DAYS, truncateBidPrice(jsonObject.getString("ChangeFromTwoHundreddayMovingAverage")));
-            builder.withValue(QuoteColumns.PERC_CHANGE_FROM_TWO_HUNDRED_DAYS, truncateChange(jsonObject.getString("PercentChangeFromTwoHundreddayMovingAverage"), true));
-            builder.withValue(QuoteColumns.AVG_CHANGE_FROM_FIFTY_DAYS, truncateBidPrice(jsonObject.getString("ChangeFromFiftydayMovingAverage")));
-            builder.withValue(QuoteColumns.PERC_CHANGE_FROM_FIFTY_DAYS, truncateChange(jsonObject.getString("PercentChangeFromFiftydayMovingAverage"), true));
+            builder.withValue(QuoteColumns.DAYS_RANGE, truncateDelimString(jsonObject.getString(QuoteColumns.DAYS_RANGE), "-"));
+            builder.withValue(QuoteColumns.LAST_TRADE_Date, truncateDate(jsonObject.getString(QuoteColumns.LAST_TRADE_Date), "/"));
+            builder.withValue(QuoteColumns.YEAR_RANGE, truncateDelimString(jsonObject.getString(QuoteColumns.YEAR_RANGE), "-"));
+            builder.withValue(QuoteColumns.PREVOUS_CLOSE, truncateBidPrice(jsonObject.getString(QuoteColumns.PREVOUS_CLOSE)));
+            builder.withValue(QuoteColumns.PRICE_EPS_EST_CURR_YEAR, truncateBidPrice(jsonObject.getString(QuoteColumns.PRICE_EPS_EST_CURR_YEAR)));
+            builder.withValue(QuoteColumns.PRICE_EPS_EST_NXT_YEAR, truncateBidPrice(jsonObject.getString(QuoteColumns.PRICE_EPS_EST_NXT_YEAR)));
+            builder.withValue(QuoteColumns.AVG_CHANGE_FROM_TWO_HUNDRED_DAYS, truncateBidPrice(jsonObject.getString(QuoteColumns.AVG_CHANGE_FROM_TWO_HUNDRED_DAYS)));
+            builder.withValue(QuoteColumns.PERC_CHANGE_FROM_TWO_HUNDRED_DAYS, truncateChange(jsonObject.getString(QuoteColumns.PERC_CHANGE_FROM_TWO_HUNDRED_DAYS), true));
+            builder.withValue(QuoteColumns.AVG_CHANGE_FROM_FIFTY_DAYS, truncateBidPrice(jsonObject.getString(QuoteColumns.AVG_CHANGE_FROM_FIFTY_DAYS)));
+            builder.withValue(QuoteColumns.PERC_CHANGE_FROM_FIFTY_DAYS, truncateChange(jsonObject.getString(QuoteColumns.PERC_CHANGE_FROM_FIFTY_DAYS), true));
         } catch (JSONException e) {
             e.printStackTrace();
         }

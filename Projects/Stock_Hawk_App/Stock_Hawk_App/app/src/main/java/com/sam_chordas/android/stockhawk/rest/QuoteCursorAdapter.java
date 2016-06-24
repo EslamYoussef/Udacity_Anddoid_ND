@@ -54,18 +54,18 @@ public class QuoteCursorAdapter extends CursorRecyclerViewAdapter<QuoteCursorAda
 
     @Override
     public void onBindViewHolder(final ViewHolder viewHolder, final Cursor cursor) {
-        viewHolder.symbol.setText(cursor.getString(cursor.getColumnIndex("symbol")));
-        viewHolder.bidPrice.setText(cursor.getString(cursor.getColumnIndex("bid_price")));
-        viewHolder.daysRange.setText(cursor.getString(cursor.getColumnIndex("DaysRange")));
-        viewHolder.yearRange.setText(cursor.getString(cursor.getColumnIndex("YearRange")));
-        viewHolder.previousClose.setText(cursor.getString(cursor.getColumnIndex("PreviousClose")));
-        viewHolder.lastTradeDate.setText(cursor.getString(cursor.getColumnIndex("LastTradeDate")));
-        viewHolder.priceEstimateCurrYear.setText(cursor.getString(cursor.getColumnIndex("PriceEPSEstimateCurrentYear")));
-        viewHolder.priceEstimateNXTYear.setText(cursor.getString(cursor.getColumnIndex("PriceEPSEstimateNextYear")));
-        viewHolder.priceChangeTwoHundredDays.setText(cursor.getString(cursor.getColumnIndex("ChangeFromTwoHundreddayMovingAverage")));
-        viewHolder.percentChangeTwoHundredDays.setText(cursor.getString(cursor.getColumnIndex("PercentChangeFromTwoHundreddayMovingAverage")));
-        viewHolder.priceChangeFiftyDays.setText(cursor.getString(cursor.getColumnIndex("ChangeFromFiftydayMovingAverage")));
-        viewHolder.percentChangeFiftyDays.setText(cursor.getString(cursor.getColumnIndex("PercentChangeFromFiftydayMovingAverage")));
+        viewHolder.symbol.setText(cursor.getString(cursor.getColumnIndex(QuoteColumns.SYMBOL)));
+        viewHolder.bidPrice.setText(cursor.getString(cursor.getColumnIndex(QuoteColumns.BIDPRICE)));
+        viewHolder.daysRange.setText(cursor.getString(cursor.getColumnIndex(QuoteColumns.DAYS_RANGE)));
+        viewHolder.yearRange.setText(cursor.getString(cursor.getColumnIndex(QuoteColumns.YEAR_RANGE)));
+        viewHolder.previousClose.setText(cursor.getString(cursor.getColumnIndex(QuoteColumns.PREVOUS_CLOSE)));
+        viewHolder.lastTradeDate.setText(cursor.getString(cursor.getColumnIndex(QuoteColumns.LAST_TRADE_Date)));
+        viewHolder.priceEstimateCurrYear.setText(cursor.getString(cursor.getColumnIndex(QuoteColumns.PRICE_EPS_EST_CURR_YEAR)));
+        viewHolder.priceEstimateNXTYear.setText(cursor.getString(cursor.getColumnIndex(QuoteColumns.PRICE_EPS_EST_NXT_YEAR)));
+        viewHolder.priceChangeTwoHundredDays.setText(cursor.getString(cursor.getColumnIndex(QuoteColumns.AVG_CHANGE_FROM_TWO_HUNDRED_DAYS)));
+        viewHolder.percentChangeTwoHundredDays.setText(cursor.getString(cursor.getColumnIndex(QuoteColumns.PERC_CHANGE_FROM_TWO_HUNDRED_DAYS)));
+        viewHolder.priceChangeFiftyDays.setText(cursor.getString(cursor.getColumnIndex(QuoteColumns.AVG_CHANGE_FROM_FIFTY_DAYS)));
+        viewHolder.percentChangeFiftyDays.setText(cursor.getString(cursor.getColumnIndex(QuoteColumns.PERC_CHANGE_FROM_FIFTY_DAYS)));
 
         //Details Views
         int position = viewHolder.getAdapterPosition();
@@ -77,7 +77,7 @@ public class QuoteCursorAdapter extends CursorRecyclerViewAdapter<QuoteCursorAda
         }
 
         int sdk = Build.VERSION.SDK_INT;
-        if (cursor.getInt(cursor.getColumnIndex("is_up")) == 1) {
+        if (cursor.getInt(cursor.getColumnIndex(QuoteColumns.ISUP)) == 1) {
             if (sdk < Build.VERSION_CODES.JELLY_BEAN) {
                 viewHolder.change.setBackgroundDrawable(
                         mContext.getResources().getDrawable(R.drawable.percent_change_pill_green));
@@ -98,7 +98,7 @@ public class QuoteCursorAdapter extends CursorRecyclerViewAdapter<QuoteCursorAda
                 }
             }
         }
-        if (cursor.getString(cursor.getColumnIndex("PercentChangeFromTwoHundreddayMovingAverage")).startsWith("+")) {
+        if (cursor.getString(cursor.getColumnIndex(QuoteColumns.PERC_CHANGE_FROM_TWO_HUNDRED_DAYS)).startsWith("+")) {
             if (sdk < Build.VERSION_CODES.JELLY_BEAN) {
                 viewHolder.percentChangeTwoHundredDays.setBackgroundDrawable(
                         mContext.getResources().getDrawable(R.drawable.percent_change_pill_green));
@@ -119,7 +119,7 @@ public class QuoteCursorAdapter extends CursorRecyclerViewAdapter<QuoteCursorAda
                 }
             }
         }
-        if (cursor.getString(cursor.getColumnIndex("PercentChangeFromFiftydayMovingAverage")).startsWith("+")) {
+        if (cursor.getString(cursor.getColumnIndex(QuoteColumns.PERC_CHANGE_FROM_FIFTY_DAYS)).startsWith("+")) {
             if (sdk < Build.VERSION_CODES.JELLY_BEAN) {
                 viewHolder.percentChangeFiftyDays.setBackgroundDrawable(
                         mContext.getResources().getDrawable(R.drawable.percent_change_pill_green));
@@ -141,9 +141,9 @@ public class QuoteCursorAdapter extends CursorRecyclerViewAdapter<QuoteCursorAda
             }
         }
         if (Utils.showPercent) {
-            viewHolder.change.setText(cursor.getString(cursor.getColumnIndex("percent_change")));
+            viewHolder.change.setText(cursor.getString(cursor.getColumnIndex(QuoteColumns.PERCENT_CHANGE)));
         } else {
-            viewHolder.change.setText(cursor.getString(cursor.getColumnIndex("change")));
+            viewHolder.change.setText(cursor.getString(cursor.getColumnIndex(QuoteColumns.CHANGE)));
         }
     }
 

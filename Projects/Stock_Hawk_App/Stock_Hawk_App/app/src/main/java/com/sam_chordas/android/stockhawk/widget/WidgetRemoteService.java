@@ -10,6 +10,7 @@ import android.widget.RemoteViewsService;
 import com.sam_chordas.android.stockhawk.R;
 import com.sam_chordas.android.stockhawk.data.QuoteColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteProvider;
+import com.sam_chordas.android.stockhawk.rest.Keys;
 
 
 /**
@@ -96,7 +97,7 @@ public class WidgetRemoteService extends RemoteViewsService {
                     views.setInt(R.id.change, "setBackgroundColor", getResources().getColor(android.R.color.holo_red_dark));
 //                final Intent fillInIntent = new Intent(WidgetRemoteService.this, MyStocksActivity.class);
                 final Intent fillInIntent = new Intent();
-                fillInIntent.putExtra("selected_position", position);
+                fillInIntent.putExtra(Keys.SELECTED_POSITION, position);
                 views.setOnClickFillInIntent(R.id.list_item_quote_container, fillInIntent);
                 return views;
             }
