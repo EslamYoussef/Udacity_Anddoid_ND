@@ -55,6 +55,7 @@ public class JokesRetrievalTask extends AsyncTask<Void, Void, String> {
 
     @Override
     protected void onPostExecute(String result) {
+
         mJokesListener.setJoke(result);
     }
 }
