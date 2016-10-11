@@ -26,6 +26,16 @@ public class TestJokesRetrievalTask {
             public void setJoke(String joke) {
 
             }
+
+            @Override
+            public void startLoading() {
+
+            }
+
+            @Override
+            public void endLoading() {
+
+            }
         };
         JokesRetrievalTask asyncTask = new JokesRetrievalTask(jokeListener) {
             @Override

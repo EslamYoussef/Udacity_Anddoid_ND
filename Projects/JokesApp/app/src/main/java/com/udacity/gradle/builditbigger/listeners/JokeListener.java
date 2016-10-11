@@ -6,4 +6,6 @@ package com.udacity.gradle.builditbigger.listeners;
 
 public interface JokeListener {
     void setJoke(String joke);
+    void startLoading();
+    void endLoading();
 }

@@ -5,6 +5,8 @@ android {
     buildToolsVersion "24.0.3"
 
     defaultConfig {
+        // Enabling multidex support.
+        multiDexEnabled true
         applicationId "com.udacity.gradle.builditbigger"
         minSdkVersion 15
         targetSdkVersion 24
@@ -12,19 +14,25 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
+    dexOptions {
+        incremental true
+        javaMaxHeapSize "2g"
+    }
     buildTypes {
 
         release {
             minifyEnabled false
+
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
     productFlavors {
         free {
-            applicationId "com.android.application.free"
+            applicationId "com.udacity.gradle.builditbigger.free"
         }
         paid {
-            applicationId "com.android.application.paid"
+            applicationId "com.udacity.gradle.builditbigger.paid"
         }
     }
 }
@@ -43,5 +51,5 @@ dependencies {
     androidTestCompile 'com.android.support.test:rules:0.5'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
     androidTestCompile 'com.android.support.test:runner:0.5'
-
+    compile 'com.android.support:multidex:1.0.0'
 }

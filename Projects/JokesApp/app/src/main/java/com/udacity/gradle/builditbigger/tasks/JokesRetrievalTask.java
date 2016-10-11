@@ -27,6 +27,12 @@ public class JokesRetrievalTask extends AsyncTask<Void, Void, String> {
     }
 
     @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        mJokesListener.startLoading();
+    }
+
+    @Override
     protected String doInBackground(Void... params) {
         if (myApiService == null) {  // Only do this once
             MyApi.Builder builder = new MyApi.Builder(AndroidHttp.newCompatibleTransport(),
@@ -57,5 +63,6 @@ public class JokesRetrievalTask extends AsyncTask<Void, Void, String> {
     protected void onPostExecute(String result) {
 
         mJokesListener.setJoke(result);
+        mJokesListener.endLoading();
     }
 }
