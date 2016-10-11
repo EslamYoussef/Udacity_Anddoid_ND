@@ -2,7 +2,6 @@ package com.udacity.gradle.builditbigger.tasks;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Pair;
 
 import com.example.eslam.myapplication.backend.myApi.MyApi;
 import com.google.api.client.extensions.android.http.AndroidHttp;
@@ -55,13 +54,12 @@ public class JokesRetrievalTask extends AsyncTask<Void, Void, String> {
         try {
             return myApiService.getJoke().execute().getData();
         } catch (IOException e) {
-            return e.getMessage();
+            return "";
         }
     }
 
     @Override
     protected void onPostExecute(String result) {
-
         mJokesListener.setJoke(result);
         mJokesListener.endLoading();
     }

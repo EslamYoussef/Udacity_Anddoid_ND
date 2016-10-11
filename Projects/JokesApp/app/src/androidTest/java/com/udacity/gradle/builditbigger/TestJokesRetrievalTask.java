@@ -9,6 +9,8 @@ import org.junit.Test;
 
 import java.util.concurrent.CountDownLatch;
 
+import static junit.framework.Assert.assertFalse;
+
 /**
  * Created by Eslam on 10/10/2016.
  */
@@ -52,6 +54,6 @@ public class TestJokesRetrievalTask {
             Log.v("AsyncTaskTest", e.getMessage());
         }
         Log.v("Joke", mResult);
-        assert mResult != null;
+        assertFalse(mResult.isEmpty());
     }
 }
