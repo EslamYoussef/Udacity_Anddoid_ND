@@ -42,8 +42,9 @@ dependencies {
     compile project(':jokesteller')
     compile project(':jokedisplay')
     // Added for AdMob
+
     compile 'com.android.support:appcompat-v7:24.2.1'
-    compile 'com.google.android.gms:play-services:9.6.1'
+    freeCompile 'com.google.android.gms:play-services:9.6.1'
     compile 'com.google.code.findbugs:jsr305:2.0.1'
     compile project(path: ':backend', configuration: 'android-endpoints')
     androidTestCompile 'com.android.support:support-annotations:24.2.1'
